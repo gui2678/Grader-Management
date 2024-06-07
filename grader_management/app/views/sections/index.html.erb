@@ -1,0 +1,7 @@
+<h1>Sections for <%= @course.course_name %></h1>
+<ul>
+  <% @sections.each do |section| %>
+    <li><%= link_to section.section_number, course_section_path(@course, section) %></li>
+  <% end %>
+</ul>
+<%= link_to 'Back to Courses', courses_path %>

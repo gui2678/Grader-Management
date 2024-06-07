@@ -1,0 +1,6 @@
+<h1>Section <%= @section.section_number %></h1>
+<p>Instructor ID: <%= @section.instructor_id %></p>
+<p>Term: <%= @section.term %></p>
+<p>Campus: <%= @section.campus %></p>
+<p>Schedule: <%= @section.schedule %></p>
+<%= link_to 'Back to Course Sections', course_sections_path(@section.course) %>
