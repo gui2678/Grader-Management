@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  approved_by: 1
+  approved_at: 2024-06-07 12:14:35
+
+two:
+  user: two
+  approved_by: 1
+  approved_at: 2024-06-07 12:14:35

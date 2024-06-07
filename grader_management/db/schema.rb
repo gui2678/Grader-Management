@@ -10,8 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_07_161435) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "approvals", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "approved_by"
+    t.datetime "approved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_approvals_on_user_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "course_number"
+    t.string "course_name"
+    t.text "course_description"
+    t.integer "credits"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "enrollments", force: :cascade do |t|
+    t.bigint "section_id", null: false
+    t.integer "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["section_id"], name: "index_enrollments_on_section_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.string "section_number"
+    t.bigint "course_id", null: false
+    t.integer "instructor_id"
+    t.string "term"
+    t.string "campus"
+    t.string "schedule"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_sections_on_course_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "role"
+    t.boolean "approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "approvals", "users"
+  add_foreign_key "enrollments", "sections"
+  add_foreign_key "sections", "courses"
 end
