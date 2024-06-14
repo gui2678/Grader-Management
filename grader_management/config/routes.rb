@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   get 'sections/show'
   get 'courses/index'
   get 'courses/show'
+  get '/admin/database-test', to: 'admin#test'
+  post '/admin/fetch_class_info', to: 'admin#fetch_class_info'
+
   devise_for :users
 
   resources :courses do
