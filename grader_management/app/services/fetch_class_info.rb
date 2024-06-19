@@ -7,14 +7,12 @@ class FetchClassInfo
   def initialize(term:, campus:, page: 1, subject: 'cse')
     @options = {
       query: {
-        q: '',
+        q: subject,
         client: 'class-search-ui',
         campus: campus,
         p: page,
         term: term,
-        'academic-career': 'ugrad',
-        subject: subject,
-        'class-attribute': 'ge2'
+        'academic-career': 'ugrad'
       }
     }
   end
@@ -45,6 +43,7 @@ class FetchClassInfo
     courses_data.each do |course_entry|
       course_data = course_entry['course']
       next unless course_data
+      next unless valid_course_data?(course_data)
 
       puts "Processing course data: #{course_data.inspect}"
 
@@ -61,8 +60,14 @@ class FetchClassInfo
     end
     puts "Class information imported successfully."
   end
-end
 
-# Initialize and call the class
-fetcher = FetchClassInfo.new(term: '1244', campus: 'col')
-fetcher.call
+  def valid_course_data?(course_data)
+    # Add conditions to filter out invalid data
+    return false if course_data['catalogNumber'].nil?
+    return false if course_data['title'].nil?
+    return false if course_data['description'].nil?
+    return false if course_data['maxUnits'].nil?
+
+    true
+  end
+end

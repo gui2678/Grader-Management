@@ -1,0 +1,19 @@
+<h1>Admin Test Page</h1>
+
+<%= form_with url: admin_fetch_class_info_path, method: :post do %>
+  <div>
+    Term: <%= text_field_tag :term, nil %>
+  </div>
+  <div>
+    Campus: <%= text_field_tag :campus, nil %>
+  </div>
+  <div>
+    <%= submit_tag "Fetch Class Info" %>
+  </div>
+<% end %>
+
+<% if flash[:notice] %>
+  <p><%= flash[:notice] %></p>
+<% elsif flash[:alert] %>
+  <p><%= flash[:alert] %></p>
+<% end %>

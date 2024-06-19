@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   get 'courses/index'
   get 'courses/show'
   get '/admin/database-test', to: 'admin#test'
-  post '/admin/fetch_class_info', to: 'admin#fetch_class_info'
+  post '/admin/fetch_class_info', to: 'admin#fetch_class_info', as: 'admin_fetch_class_info'
+  
 
   devise_for :users
 
@@ -14,6 +15,4 @@ Rails.application.routes.draw do
   end
 
   root to: "home#index"
-
-  # Define other routes as needed
 end
