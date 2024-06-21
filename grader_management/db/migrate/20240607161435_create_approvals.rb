@@ -9,4 +9,3 @@ class CreateApprovals < ActiveRecord::Migration[7.0]
     end
   end
 end
-rails db:migrate

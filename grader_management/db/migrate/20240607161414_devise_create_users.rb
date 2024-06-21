@@ -33,3 +33,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
 
       ## Lockable
       t.integer  :failed_attempts, default: 0, null: false # O
+    end
+  end
+end
+
