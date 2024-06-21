@@ -2,24 +2,17 @@ require 'httparty'
 
 class FetchClassInfo
   include HTTParty
-  base_uri 'https://content.osu.edu'
+  #base_uri 'https://content.osu.edu'
 
   def initialize(term:, campus:, page: 1, subject: 'cse')
-    @options = {
-      query: {
-        q: subject,
-        client: 'class-search-ui',
-        campus: campus,
-        p: page,
-        term: term,
-        'academic-career': 'ugrad'
-      }
-    }
+    @options="?q=" + subject + "&campus="+ campus +"&term=" + term 
   end
 
   def call
     puts "Making API request with options: #{@options.inspect}"
-    response = self.class.get('/v2/classes/search', @options)
+    puts 'https://content.osu.edu/v2/classes/search'+ @options 
+    response = self.class.get('https://content.osu.edu/v2/classes/search'+ @options )
+    
     if response.success?
       puts "API response received: #{response.parsed_response.inspect}"
       process_response(response.parsed_response)
