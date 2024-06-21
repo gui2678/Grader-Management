@@ -14,17 +14,6 @@ class AdminController < ApplicationController
     else
       redirect_to admin_index_path, alert: 'Failed to update user approval status.'
     end
-
-  end
-
-  def approve_user_path
-
-  end
-
-  private
-
-  def check_admin
-    redirect_to(root_path, alert: 'Not authorized') unless current_user.admin?
   end
 
   def test
@@ -35,5 +24,11 @@ class AdminController < ApplicationController
     fetcher = FetchClassInfo.new(term: params[:term], campus: params[:campus])
     fetcher.call
     redirect_to admin_database_test_path, notice: 'Class information fetched successfully.'
+  end
+
+  private
+
+  def check_admin
+    redirect_to(root_path, alert: 'Not authorized') unless current_user.admin?
   end
 end
