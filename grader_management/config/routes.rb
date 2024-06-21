@@ -22,10 +22,13 @@ Rails.application.routes.draw do
     get 'users/sign_out', to: 'devise/sessions#destroy'
   end
 
+  get '/admin/database-test', to: 'admin#test'
+  post '/admin/fetch_class_info', to: 'admin#fetch_class_info', as: 'admin_fetch_class_info'
+  
+
   resources :courses do
     resources :sections, only: [:index, :show]
   end
 
   root to: "home#index"
-
 end

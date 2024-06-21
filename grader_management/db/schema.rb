@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_07_161435) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_19_195536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_07_161435) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
+    t.boolean "admin"
   end
 
   add_foreign_key "approvals", "users"
