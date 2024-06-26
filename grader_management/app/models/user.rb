@@ -20,10 +20,21 @@ class User < ApplicationRecord
   validates :role, presence: true
   validate :email_domain
 
+  # Method to check user permissions
+  def has_permission?(permission)
+    role_permissions = {
+      student: ['browse_catalog'],
+      instructor: ['browse_catalog'],
+      admin: ['browse_catalog', 'edit_catalog', 'reload_catalog', 'approve_registers']
+    }
+    role_permissions[role.to_sym].include?(permission)
+  end
+  
   private
 
   def email_domain
     domain = email.split('@').last
     errors.add(:email, 'must be an @osu.edu email') unless domain == 'osu.edu'
   end
+  
 end
