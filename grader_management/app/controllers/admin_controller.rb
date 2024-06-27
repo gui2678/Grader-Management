@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin
+  skip_before_action :verify_authenticity_token, only: [:fetch_class_info]
 
   def index
     @users = User.all
