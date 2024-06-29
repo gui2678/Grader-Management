@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_19_195536) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_29_232441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,12 +24,40 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_19_195536) do
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string "course_number"
-    t.string "course_name"
-    t.text "course_description"
-    t.integer "credits"
+    t.string "course_number", null: false
+    t.string "course_name", null: false
+    t.text "course_description", null: false
+    t.integer "credits", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "term"
+    t.date "effective_date"
+    t.string "effective_status"
+    t.string "title"
+    t.string "short_description"
+    t.text "description"
+    t.string "equivalent_id"
+    t.string "allow_multi_enroll"
+    t.integer "max_units"
+    t.integer "min_units"
+    t.integer "repeat_units_limit"
+    t.string "grading"
+    t.string "component"
+    t.string "primary_component"
+    t.integer "offering_number"
+    t.string "academic_group"
+    t.string "subject"
+    t.string "catalog_number"
+    t.string "campus"
+    t.string "academic_org"
+    t.string "academic_career"
+    t.string "cip_code"
+    t.string "campus_code"
+    t.string "catalog_level"
+    t.string "subject_desc"
+    t.text "course_attributes"
+    t.string "course_id"
+    t.index ["course_number"], name: "index_courses_on_course_number", unique: true
   end
 
   create_table "enrollments", force: :cascade do |t|
