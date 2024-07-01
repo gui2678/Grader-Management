@@ -1,8 +1,9 @@
 class CoursesController < ApplicationController
+  include Pagy::Backend
   before_action :authenticate_user!
 
   def index
-    @courses = Course.all
+    @pagy, @courses = pagy(Course.all, items: 10)
     @flash_notice = flash[:notice] if flash[:notice]
   end
 
