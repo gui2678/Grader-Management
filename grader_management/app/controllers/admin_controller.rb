@@ -15,16 +15,11 @@ class AdminController < ApplicationController
     else
       redirect_to admin_index_path, alert: 'Failed to update user approval status.'
     end
+
   end
 
-  def test
-    @courses = Course.all
-  end
+  def approve_user_path
 
-  def fetch_class_info
-    fetcher = FetchClassInfo.new(term: params[:term], campus: params[:campus])
-    fetcher.call
-    redirect_to admin_database_test_path, notice: 'Class information fetched successfully.'
   end
 
   private

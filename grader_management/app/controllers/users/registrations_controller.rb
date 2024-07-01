@@ -4,10 +4,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
 
   def create
-    super do |resource|
-      if resource.persisted?
-        set_flash_message! :notice, :signed_up #Set the flash message
+    # super do |resource|
+    #   if resource.persisted?
+    #     set_flash_message! :notice, :signed_up #Set the flash message
+    #   end
+    # end
+    build_resource(sign_up_params)
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+      else
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
       end
+      redirect_to after_sign_up_path_for(resource)
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
     end
   end
   # private

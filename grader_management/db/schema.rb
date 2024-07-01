@@ -100,7 +100,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_232441) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
-    t.boolean "admin"
   end
 
   add_foreign_key "approvals", "users"

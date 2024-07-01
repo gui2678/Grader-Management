@@ -14,7 +14,7 @@ module GraderManagement
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.application_name = "Grader Management"
+    config.application_name = "CourseInsight"
     config.assets.enabled = true
     config.assets.paths << Rails.root.join("app", "assets", "images")
     config.assets.paths << Rails.root.join("app", "assets", "stylesheets")

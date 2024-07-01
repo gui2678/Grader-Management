@@ -11,11 +11,11 @@ class Users::SessionsController < Devise::SessionsController
       # Authenticate the user with the provided password
       if user.valid_password?(params[:user][:password])
         puts "Password is valid"
-
+        puts user.approved
         if user.approved?
           puts "User is approved"
           sign_in(user)
-          redirect_to '/courses/index'
+          redirect_to '/home/index'
         else
           puts "User is not approved"
           redirect_to new_user_session_path, alert: 'Your account is not approved yet.'

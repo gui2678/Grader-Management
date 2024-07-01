@@ -24,6 +24,7 @@ class User < ApplicationRecord
   validates :role, presence: true
   validate :email_domain
 
+  before_create :set_default_role
   
   private
 
@@ -32,4 +33,8 @@ class User < ApplicationRecord
     errors.add(:email, 'must be an @osu.edu email') unless domain == 'osu.edu'
   end
   
+  def set_default_role
+    self.role = 'student' if self.role.blank?
+    self.approved = true if self.role == 'student'
+  end
 end

@@ -1,4 +1,9 @@
-<h1><%= @course.course_name %></h1>
-<p><%= @course.course_description %></p>
-<p>Credits: <%= @course.credits %></p>
-<%= link_to 'Back', courses_path %>
+<div class="home-container d-flex justify-content-center align-items-center">
+    <div class="admin-content">
+      <h1 class="display-4"><%= @course.course_name %></h1>
+      <p class="lead"><%= @course.course_description %></p>
+      <p class="mb-4">Credits: <%= @course.credits %></p>
+      <%= link_to 'Back', courses_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+  

@@ -2,40 +2,44 @@
   <% content_for :title, 'User Management' %>
 
 </head>
-<h1>Admin Dashboard</h1>
-<h2>Users</h2>
-
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Role</th>
-        <th>Approved</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.email %></td>
-          <td><%= user.first_name %></td>
-          <td><%= user.last_name %></td>
-          <td><%= user.role %></td>
-          <td class="text-center ml-3">
-            <%= form_with url: '/approve_requests', id:"user_form"+user.id.to_s,method: :put, class: 'd-flex align-items-center' do |form| %>
-              <%= form.text_field :user_id, type: 'hidden', value: user.id %>
-              <%= form.check_box "approved", checked: user.approved?, class: 'form-check-input' %>
+<body>
+    
+    <div class="admin-content">
+      <h1>Admin Dashboard</h1>
+      <h2>Users</h2>
+      <div class="table-responsive">
+        <table class="table" style="color: white;">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Role</th>
+              <th>Approved</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= user.email %></td>
+                <td><%= user.first_name %></td>
+                <td><%= user.last_name %></td>
+                <td><%= user.role %></td>
+                <td class="text-center ml-3">
+                  <%= form_with url: '/approve_requests', id:"user_form"+user.id.to_s,method: :put, class: 'd-flex align-items-center justify-content-center' do |form| %>
+                    <%= form.text_field :user_id, type: 'hidden', value: user.id, style:'display:none' %>
+                    <%= form.check_box "approved", checked: user.approved?, class: 'form-check-input' %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= submit_tag "Save", class: 'btn btn-primary btn-sm ml-2', form: 'user_form'+user.id.to_s %>
+                </td>
+              </tr>
             <% end %>
-          </td>
-          <td>
-            <%= submit_tag "Save", class: 'btn btn-primary btn-sm ml-2', form: 'user_form'+user.id.to_s %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</body>
 
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
