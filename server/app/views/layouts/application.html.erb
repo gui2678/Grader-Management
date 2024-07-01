@@ -11,8 +11,8 @@
   </head>
 
   <body>
-    <% flash.each do |type, message| %>
-      <div class="flash <%= type %>"><%= message %></div>
+    <% if flash[:alert] %>
+      <div class="flash alert">Login Failed: Account is Pending Approval</div>
     <% end %>
     <%= yield %>
   </body>
