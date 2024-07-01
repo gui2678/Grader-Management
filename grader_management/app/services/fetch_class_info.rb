@@ -3,32 +3,45 @@ require 'httparty'
 class FetchClassInfo
   include HTTParty
 
+  BASE_URL = 'https://contenttest.osu.edu/v2/classes/search'
+
   def initialize(term:, campus:, page: 1, subject: 'cse')
-    @options = "?q=" + subject + "&campus=" + campus + "&term=" + term
+    @options = "?q=" + subject + "&campus=" + campus + "&term=" + term + "&p=" + page.to_s
   end
 
   def call
-    puts "Making API request with options: #{@options.inspect}"
-    response = self.class.get('https://content.osu.edu/v2/classes/search' + @options)
+    url = BASE_URL + @options
+    Rails.logger.info "Making API request to: #{url}"
+
+    response = self.class.get(url)
 
     if response.success?
-      puts "API response received: #{response.parsed_response.inspect}"
+      Rails.logger.info "API response received: #{response.parsed_response.inspect}"
       process_response(response.parsed_response)
     else
-      puts "Error fetching class info: #{response.code} - #{response.message}"
+      Rails.logger.error "Error fethcing class info: #{response.code} - #{response.message}"
       raise "Error fetching class info: #{response.code} - #{response.message}"
     end
+  rescue StandardError => e
+    Rails.logger.error "Exception in FetchClassInfo: #{e.message}\n#{e.backtrace.join("\n")}"
   end
 
   private
 
   def process_response(response_data)
     courses_data = response_data.dig('data', 'courses')
-    puts "Extracted courses data: #{courses_data.inspect}"
+    Rails.logger.info "Extracted courses data: #{courses_data.inspect}"
 
     unless courses_data
-      puts "Unexpected response structure: 'courses' key not found"
+      Rails.logger.error "Unexpected response structure: 'courses' key not found"
       raise "Unexpected response structure: 'courses' key not found"
+    end
+
+    if courses_data.empty?
+      Rails.logger.warn "No courses found for these params."
+      Rails.application.env_config['action_dispatch.request.flash_hash'] = ActionDispatch::Flash::FlashHash.new
+      Rails.application.env_config['action_dispatch.request.flash_hash'][:notice] = "No courses found for these params."
+      return
     end
 
     courses_data.each do |course_entry|
@@ -36,7 +49,7 @@ class FetchClassInfo
       next unless course_data
       next unless valid_course_data?(course_data)
 
-      puts "Processing course data: #{course_data.inspect}"
+      Rails.logger.info "Processing course data: #{course_data.inspect}"
 
       course_attributes = {
         term: course_data['term'],
@@ -66,28 +79,23 @@ class FetchClassInfo
         subject_desc: course_data['subjectDesc'],
         course_attributes: course_data['courseAttributes'],
         course_id: course_data['courseId'],
-        credits: course_data['maxUnits'] # Ensure this is set
+        credits: course_data['maxUnits']
       }
 
       course = Course.find_or_initialize_by(course_number: course_data['catalogNumber'])
       course.assign_attributes(course_attributes)
 
       if course.save
-        puts "Course #{course.course_number} saved successfully."
+        Rails.logger.info "Course #{course.course_number} saved successfully."
       else
-        puts "Error saving course #{course.course_number}: #{course.errors.full_messages.join(', ')}"
+        Rails.logger.error "Error saving course #{course.course_number}: #{course.errors.full_messages.join(', ')}"
       end
     end
-    puts "Class information imported successfully."
+    Rails.logger.info "Class information imported successfully."
   end
 
   def valid_course_data?(course_data)
-    # Add conditions to filter out invalid data
-    return false if course_data['catalogNumber'].nil?
-    return false if course_data['title'].nil?
-    return false if course_data['description'].nil?
-    return false if course_data['maxUnits'].nil?
-
-    true
+    required_keys = %w[catalogNumber title description maxUnits]
+    required_keys.all? { |key| course_data[key].present? }
   end
 end

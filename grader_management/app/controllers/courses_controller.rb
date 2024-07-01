@@ -20,6 +20,7 @@ class CoursesController < ApplicationController
 
   def index
     @courses = Course.all
+    @flash_notice = flash[:notice] if flash[:notice]
   end
 
   def show
@@ -61,8 +62,50 @@ class CoursesController < ApplicationController
     redirect_to courses_path
   end
 
+  def reload_courses
+    
+  end
+
+  def do_reload_courses
+    term = params[:term]
+    campus = params[:campus]
+
+    if term.present? && campus.present?
+      if call_fetch_class_info(term, campus)
+        flash[:notice] = "Class information imported successfully."
+      else
+        flash[:alert] = "There was an error importing class information."
+      end
+    else
+      flash[:alert] = "Term and campus are required to reload courses."
+    end
+    redirect_to courses_path
+  end
+
+  
   private
   def course_params
     params.require(:course).permit(:title, :text)
+  end
+  def call_fetch_class_info(term, campus)
+    fetcher = FetchClassInfo.new(term: term, campus: campus)
+
+    if fetcher.call
+      true
+    else
+      Rails.logger.error "FetchClassInfo service failed for term: #{term}, campus: #{campus}"
+      false
+    end
+  end
+
+  def course_params
+    params.require(:course).permit(:title, :text)
+  end
+
+  def verify_admin
+    unless current_user.admin?
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to root_path
+    end
   end
 end

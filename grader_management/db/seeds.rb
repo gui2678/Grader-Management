@@ -10,7 +10,7 @@
 
 # example admin user
 admin = User.create!(
-  email: 'admin@example.com',
+  email: 'admin@osu.edu',
   password: 'password',
   password_confirmation: 'password',
   first_name: 'Admin',
