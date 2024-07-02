@@ -41,9 +41,10 @@ class CoursesController < ApplicationController
 
   def destroy
       @course = Course.find(params[:id])
-    @course.destroy
+      @course.destroy
 
-      redirect_to courses_path
+      redirect_to courses_path, notice: 'Course was successfully deleted'
+
   end
 
   def do_reload_courses
@@ -64,9 +65,7 @@ class CoursesController < ApplicationController
 
   
   private
-  def course_params
-    params.require(:course).permit(:title, :text)
-  end
+
   def call_fetch_class_info(term, campus)
     fetcher = FetchClassInfo.new(term: term, campus: campus)
 
@@ -79,7 +78,7 @@ class CoursesController < ApplicationController
   end
 
   def course_params
-    params.require(:course).permit(:title, :text)
+    params.require(:course).permit(:course_name, :course_description, :credits)
   end
 
   def verify_admin
