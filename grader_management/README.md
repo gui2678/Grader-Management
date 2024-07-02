@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Grader Management System is a web application designed to streamline the management of course information, student enrollments, and instructor assignments for the Computer Science and Engineering department at Ohio State University. This system provides functionalities for students, instructors, and administrators to manage course-related activities efficiently.
+The Grader Management System (CourseInsight) is a web application designed to streamline the management of course information, student enrollments, and instructor assignments for the Computer Science and Engineering department at Ohio State University. This system provides functionalities for students, instructors, and administrators to manage course-related activities efficiently.
 
 ## Features
 
