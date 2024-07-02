@@ -1,9 +1,18 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!
+  before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def index
     @courses = Course.all
-    @flash_notice = flash[:notice] if flash[:notice]
+
+    if params[:search].present?
+      search_term = params[:search].downcase
+      @courses = @courses.where('LOWER(course_name) LIKE ? OR LOWER(course_description) LIKE ?', "%#{search_term}%", "%#{search_term}%")
+    end
+
+    if params[:sort_by].present?
+      @courses = @courses.order(params[:sort_by])
+    end
   end
 
   def show
@@ -64,7 +73,7 @@ class CoursesController < ApplicationController
   
   private
   def course_params
-    params.require(:course).permit(:title, :text)
+    params.require(:course).permit(:course_number, :course_name, :course_description, :credits)  
   end
   def call_fetch_class_info(term, campus)
     fetcher = FetchClassInfo.new(term: term, campus: campus)
@@ -75,10 +84,6 @@ class CoursesController < ApplicationController
       Rails.logger.error "FetchClassInfo service failed for term: #{term}, campus: #{campus}"
       false
     end
-  end
-
-  def course_params
-    params.require(:course).permit(:title, :text)
   end
 
   def verify_admin
