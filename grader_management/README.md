@@ -9,7 +9,7 @@ The Grader Management System (CourseInsight) is a web application designed to st
 - **User Authentication and Authorization**: Secure login and registration for students, instructors, and administrators using Devise.
 - **Course Management**: Create, read, update, and delete course information.
 - **User Management**: Administrators can approve or reject user registration requests.
-- **Section Management**: Manage sections of courses including assignments of instructors and enrollments of students.
+- **Section Management**: View sections of courses including assignments of instructors and enrollments of students.
 - **Fetch Class Info**: Fetch course information from The Ohio State University API.
 
 ## Project Structure
@@ -128,7 +128,7 @@ The Grader Management System (CourseInsight) is a web application designed to st
 
 ### Admin Dashboard
 
-- Admin users can manage other users, approve registration requests, and reload course information from The Ohio State University API.
+- Admin users can manage other users, approve registration requests, and manage (edit, delete, and reload) course information from The Ohio State University API.
 
 ### Course Management
 
@@ -137,8 +137,9 @@ The Grader Management System (CourseInsight) is a web application designed to st
 
 ### User Registration and Login
 
-- Users can register for an account and log in.
-- Admins need to approve new users before they can access the system.
+- Users can register for an account and log in:
+- Admins need to approve new admins/instructors before they can access the system.
+- Users that register with student role get approved automatically.
 
 ## Testing
 
