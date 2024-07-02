@@ -10,7 +10,7 @@ The Grader Management System is a web application designed to streamline the man
 - **Course Management**: Create, read, update, and delete course information.
 - **User Management**: Administrators can approve or reject user registration requests.
 - **Section Management**: Manage sections of courses including assignments of instructors and enrollments of students.
-- **Fetch Class Info**: Fetch course information from an external API.
+- **Fetch Class Info**: Fetch course information from The Ohio State University API.
 
 ## Project Structure
 
@@ -58,7 +58,7 @@ The Grader Management System is a web application designed to streamline the man
 
 ### Services
 
-- **FetchClassInfo**: Service for fetching class information from an external API.
+- **FetchClassInfo**: Service for fetching class information from the Ohio State University API.
 
 ### Views
 
@@ -73,7 +73,7 @@ The Grader Management System is a web application designed to streamline the man
 - **new.html.erb**: View for creating a new course.
 - **edit.html.erb**: View for editing an existing course.
 - **show.html.erb**: View for displaying course details.
-- **reload_courses.html.erb**: View for reloading course information from an external source.
+- **reload_courses.html.erb**: View for reloading course information from an The Ohio State University source.
 
 #### Devise
 
@@ -129,12 +129,12 @@ The Grader Management System is a web application designed to streamline the man
 
 ### Admin Dashboard
 
-- Admin users can manage other users, approve registration requests, and reload course information from the Ohio State University API.
+- Admin users can manage other users, approve registration requests, and reload course information from The Ohio State University API.
 
 ### Course Management
 
 - Create, view, edit, and delete courses.
-- Fetch and display course information from an external API.
+- Fetch and display course information from The Ohio State University API.
 
 ### User Registration and Login
 
