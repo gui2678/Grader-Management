@@ -101,7 +101,7 @@ The Grader Management System is a web application designed to streamline the man
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/your-username/grader_management.git
+    git clone https://github.com/cse-3901-sharkey/2024-su-Team-2-Lab-2.git
     cd grader_management
     ```
 
