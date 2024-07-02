@@ -18,7 +18,24 @@ admin = User.create!(
   role: 'admin',
   approved: true
 )
-
+admin = User.create!(
+  email: 'instructor@osu.edu',
+  password: 'password',
+  password_confirmation: 'password',
+  first_name: 'Instructor',
+  last_name: 'User',
+  role: 'instructor',
+  approved: true
+)
+admin = User.create!(
+  email: 'student@osu.edu',
+  password: 'password',
+  password_confirmation: 'password',
+  first_name: 'Student',
+  last_name: 'User',
+  role: 'student',
+  approved: true
+)
 # example courses
 course1 = Course.create!(
   course_number: 'CSE101',
