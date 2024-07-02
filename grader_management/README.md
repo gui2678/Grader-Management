@@ -129,7 +129,7 @@ The Grader Management System is a web application designed to streamline the man
 
 ### Admin Dashboard
 
-- Admin users can manage other users, approve registration requests, and reload course information from the external API.
+- Admin users can manage other users, approve registration requests, and reload course information from the Ohio State University API.
 
 ### Course Management
 
