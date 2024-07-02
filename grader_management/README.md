@@ -102,7 +102,6 @@ The Grader Management System (CourseInsight) is a web application designed to st
 1. **Clone the repository**:
     ```sh
     git clone https://github.com/cse-3901-sharkey/2024-su-Team-2-Lab-2.git
-    cd grader_management
     ```
 
 2. **Install dependencies**:
