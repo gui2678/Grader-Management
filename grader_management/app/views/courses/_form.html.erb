@@ -23,9 +23,27 @@
     <%= form.label :text %><br>
     <%= form.text_area :text %>
   </p>
+  <div class="field">
+    <%= form.label :course_number %>
+    <%= form.text_field :course_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :course_name %>
+    <%= form.text_field :course_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :course_description %>
+    <%= form.text_area :course_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :credits %>
+    <%= form.number_field :credits %>
+  </div>
  
   <p>
     <%= form.submit %>
   </p>
- 
 <% end %>
