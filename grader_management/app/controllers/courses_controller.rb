@@ -83,11 +83,7 @@ class CoursesController < ApplicationController
 
   private
 def course_params
-<<<<<<< HEAD
-        params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
-=======
   params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
->>>>>>> editDeleteFunctionality
   end
 
   def call_fetch_class_info(term, campus)
