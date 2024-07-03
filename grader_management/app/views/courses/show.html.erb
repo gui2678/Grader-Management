@@ -4,6 +4,8 @@
       <p class="lead"><%= @course.course_description %></p>
       <p class="mb-4">Credits: <%= @course.credits %></p>
       <%= link_to 'Back', courses_path, class: 'btn btn-secondary' %>
+      <%= link_to 'Edit', edit_course_path(@course), class: 'btn btn-primary' %>
+      <%= link_to 'Delete', course_path(@course), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
     </div>
-  </div>
+</div>
   

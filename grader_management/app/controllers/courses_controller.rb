@@ -53,8 +53,8 @@ class CoursesController < ApplicationController
 
   def destroy
       @course = Course.find(params[:id])
-    @course.destroy
-      redirect_to courses_path
+      @course.destroy
+      redirect_to courses_path, notice: 'Course was successfully deleted.'
   end
 
   def do_reload_courses
@@ -73,7 +73,7 @@ class CoursesController < ApplicationController
     redirect_to courses_path
   end
 
-  
+
   private
 def course_params
   params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :text)
