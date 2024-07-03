@@ -4,12 +4,8 @@ class CoursesController < ApplicationController
   before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def index
-<<<<<<< HEAD
-    @pagy, @courses = pagy(Course.all)
-=======
     @pagy, @courses = pagy(Course.all, items: 10)
     @flash_notice = flash[:notice] if flash[:notice]
->>>>>>> editDeleteFunctionality
 
     if params[:search].present?
       search_term = params[:search].downcase

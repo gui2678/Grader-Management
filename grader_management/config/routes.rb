@@ -20,13 +20,6 @@ Rails.application.routes.draw do
   # home routes
   get 'home/index'
   # course routes
-<<<<<<< HEAD
-=======
-  # get 'courses/index'
-  # get 'courses/show'
-
-  # resources
->>>>>>> editDeleteFunctionality
   resources :courses do
     collection do
       get 'reload_courses'
