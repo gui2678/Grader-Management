@@ -1,9 +1,11 @@
 class CoursesController < ApplicationController
+  include Pagy::Backend
   before_action :authenticate_user!
   before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def index
-    @courses = Course.all
+    @pagy, @courses = pagy(Course.all, items: 10)
+    @flash_notice = flash[:notice] if flash[:notice]
 
     if params[:search].present?
       search_term = params[:search].downcase
@@ -76,7 +78,7 @@ class CoursesController < ApplicationController
 
   private
 def course_params
-  params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :text)
+  params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
   end
 
   def call_fetch_class_info(term, campus)

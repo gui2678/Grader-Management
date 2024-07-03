@@ -37,8 +37,8 @@ Rails.application.routes.draw do
   get 'sections/show'
 
   # course routes
-  get 'courses/index'
-  get 'courses/show'
+  # get 'courses/index'
+  # get 'courses/show'
 
   # resources
   resources :courses do
