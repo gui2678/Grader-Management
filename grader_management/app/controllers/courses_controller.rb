@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def index
-    @courses = Course.all
+    @pagy, @courses = pagy(Course.all)
 
     if params[:search].present?
       search_term = params[:search].downcase
