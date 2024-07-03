@@ -24,10 +24,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_232441) do
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string "course_number", null: false
-    t.string "course_name", null: false
-    t.text "course_description", null: false
-    t.integer "credits", null: false
+    t.string "course_number"
+    t.string "course_name"
+    t.text "course_description"
+    t.integer "credits"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "term"
@@ -57,7 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_232441) do
     t.string "subject_desc"
     t.text "course_attributes"
     t.string "course_id"
-    t.index ["course_number"], name: "index_courses_on_course_number", unique: true
   end
 
   create_table "enrollments", force: :cascade do |t|
@@ -100,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_29_232441) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
+    t.boolean "admin"
   end
 
   add_foreign_key "approvals", "users"

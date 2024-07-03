@@ -1,9 +1,15 @@
 class CoursesController < ApplicationController
+  include Pagy::Backend
   before_action :authenticate_user!
   before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def index
+<<<<<<< HEAD
     @pagy, @courses = pagy(Course.all)
+=======
+    @pagy, @courses = pagy(Course.all, items: 10)
+    @flash_notice = flash[:notice] if flash[:notice]
+>>>>>>> editDeleteFunctionality
 
     if params[:search].present?
       search_term = params[:search].downcase
@@ -54,12 +60,17 @@ class CoursesController < ApplicationController
 
   def destroy
       @course = Course.find(params[:id])
+<<<<<<< HEAD
       if @course.destroy
         flash[:notice] = "Course has been deleted successfully."
       else
         flash[:alert] = "Error deleting course."
       end
       redirect_to courses_path
+=======
+      @course.destroy
+      redirect_to courses_path, notice: 'Course was successfully deleted.'
+>>>>>>> editDeleteFunctionality
   end
 
   def do_reload_courses
@@ -78,10 +89,14 @@ class CoursesController < ApplicationController
     redirect_to courses_path
   end
 
-  
+
   private
 def course_params
+<<<<<<< HEAD
         params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
+=======
+  params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
+>>>>>>> editDeleteFunctionality
   end
 
   def call_fetch_class_info(term, campus)
