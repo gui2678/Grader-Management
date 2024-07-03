@@ -28,12 +28,10 @@
                 <td><%= user.role %></td>
                 <td class="text-center ml-3">
                   <%= form_with url: '/approve_requests', id:"user_form"+user.id.to_s,method: :put, class: 'd-flex align-items-center justify-content-center' do |form| %>
-                    <%= form.text_field :user_id, type: 'hidden', value: user.id, style:'display:none' %>
+                    <%= form.hidden_field :user_id, type: 'hidden', value: user.id, style:'display:none' %>
                     <%= form.check_box "approved", checked: user.approved?, class: 'form-check-input' %>
-                  <% end %>
-                </td>
-                <td>
-                  <%= submit_tag "Save", class: 'btn btn-primary btn-sm ml-2', form: 'user_form'+user.id.to_s %>
+                  <%= submit_tag "Save", class: 'btn btn-primary btn-sm ml-2', 
+                <% end %>
                 </td>
               </tr>
             <% end %>
