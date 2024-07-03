@@ -45,7 +45,8 @@ class CoursesController < ApplicationController
       @course = Course.find(params[:id])
 
       if @course.update(course_params)
-        redirect_to @course
+        flash[:notice] = "Success! See below for your updated course!"
+        redirect_to courses_path
       else
         render 'edit'
       end
@@ -53,7 +54,11 @@ class CoursesController < ApplicationController
 
   def destroy
       @course = Course.find(params[:id])
-    @course.destroy
+      if @course.destroy
+        flash[:notice] = "Course has been deleted successfully."
+      else
+        flash[:alert] = "Error deleting course."
+      end
       redirect_to courses_path
   end
 
@@ -76,7 +81,7 @@ class CoursesController < ApplicationController
   
   private
 def course_params
-  params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :text)
+        params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
   end
 
   def call_fetch_class_info(term, campus)
