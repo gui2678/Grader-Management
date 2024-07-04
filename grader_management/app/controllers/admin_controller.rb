@@ -18,10 +18,6 @@ class AdminController < ApplicationController
 
   end
 
-  def approve_user_path
-
-  end
-
   private
 
   def check_admin
