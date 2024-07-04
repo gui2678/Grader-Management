@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # admin routes
   get 'admin/index'
   get 'admin/approve_requests'
-  put 'approve_requests', to: 'admin#approve_requests'
+  get 'approve_requests', to: 'admin#approve_requests'
   get 'admin/database-test', to: 'admin#test'
   post 'admin/fetch_class_info', to: 'admin#fetch_class_info', as: 'admin_fetch_class_info'
 
