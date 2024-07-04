@@ -152,19 +152,19 @@ Here is an overview of the project directory structure:
 
 #### Home
 
-- **index.html.erb**: Home page view.
+- **index.html.erb**: Home page view. ![Home Page](LandingPage.png)
 
 
 ## Features
 
 - **Course Management:** Add, edit, delete courses.
 - **Section Management:** Add, edit, delete sections.
-- **User Management:** Devise-based authentication for users.
+- **User Management:** Devise-based authentication for users and editing. ![Edit Page](EditUser.png)
 - **JavaScript Integration:** Uses Turbo and Stimulus for enhanced user experience.
 
 ## Usage
 
-### Course Management
+### Course Management![Course Listing](CourseListing.png)
 
 - **Add a Course:**
     - Navigate to the courses section and click on 'New Course'.
@@ -196,7 +196,7 @@ Here is an overview of the project directory structure:
     - Click on the 'Destroy' button next to the section you want to delete.
     - Confirm the deletion in the popup.
  
- ### User Registration and Login
+ ### User Registration and Login ![Login Page](LoginPage.png)
 
 - Users can register for an account and log in:
 - Admins need to approve new admins/instructors before they can access the system.
