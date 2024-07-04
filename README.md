@@ -13,7 +13,6 @@ This project is a web application developed using Ruby on Rails for viewing and 
 4. [Features](#features)
 5. [Usage](#usage)
 6. [Contributing](#contributing)
-7. [License](#license)
 
 ## Project Setup
 
@@ -84,39 +83,77 @@ Here is an overview of the project directory structure:
 
 ## Directory Contents
 
-### `grader_management/`
-This directory contains the Rails application for managing graders.
-- **app/**: Contains the core application code, including models, views, controllers, helpers, mailers, and assets.
-- **bin/**: Contains binary files for setup and running the application.
-- **config/**: Configuration files for the application, including routes, database configuration, and environment settings.
-- **db/**: Database-related files, including migrations, schema, and seeds.
-- **lib/**: Custom libraries and modules.
-- **log/**: Application log files.
-- **public/**: Static files served directly by the web server.
-- **storage/**: Files for Active Storage (if used).
-- **test/**: Test files and test data.
-- **tmp/**: Temporary files.
-- **vendor/**: Third-party code and libraries.
+### Controllers
 
-### `server/`
-This directory contains the main Rails server application.
-- **app/**: Contains the core application code, including models, views, controllers, helpers, mailers, and assets.
-- **bin/**: Contains binary files for setup and running the application.
-- **config/**: Configuration files for the application, including routes, database configuration, and environment settings.
-- **db/**: Database-related files, including migrations, schema, and seeds.
-- **lib/**: Custom libraries and modules.
-- **log/**: Application log files.
-- **public/**: Static files served directly by the web server.
-- **storage/**: Files for Active Storage (if used).
-- **test/**: Test files and test data.
-- **tmp/**: Temporary files.
-- **vendor/**: Third-party code and libraries.
+- **Users::ConfirmationsController**: Handles user confirmation actions.
+- **Users::OmniauthCallbacksController**: Handles user authentication via OmniAuth providers.
+- **Users::PasswordsController**: Manages user password actions.
+- **Users::RegistrationsController**: Handles user registration actions.
+- **Users::SessionsController**: Manages user session actions.
+- **AdminController**: Handles admin actions such as indexing users and courses, and approving user requests.
+- **ApplicationController**: The base controller for the application.
+- **CoursesController**: Manages course actions including listing, showing, creating, updating, and destroying courses, as well as reloading course information.
+- **HomeController**: Redirects to the courses index after user authentication.
+- **SectionsController**: Manages section actions including listing and showing sections for a course.
 
-### Root Directory
-- **.gitignore**: Specifies files and directories that should be ignored by Git.
-- **README.md**: This file, containing information about the project.
-- **fetchCourseData.rb**: Script for fetching course data from an external source.
-- **project_structure.txt**: Description of the project structure.
+### Helpers
+
+- **ApplicationHelper, CoursesHelper, HomeHelper, SectionsHelper**: Contains helper methods for views.
+
+### JavaScript
+
+- **Controllers**: Contains Stimulus controllers for enhancing user interactions.
+
+### Jobs
+
+- **ApplicationJob**: Base class for background jobs.
+
+### Mailers
+
+- **ApplicationMailer**: Base class for mailers with default settings.
+
+### Models
+
+- **ApplicationRecord**: Base class for models.
+- **Approval**: Model for handling user approvals with associations and validations.
+- **Course**: Model for managing courses with associations and validations.
+- **Enrollment**: Model for managing enrollments with associations and validations.
+- **Section**: Model for managing sections with associations and validations.
+- **User**: Model for managing users with Devise modules, roles, associations, and validations.
+
+### Services
+
+- **FetchClassInfo**: Service for fetching class information from the Ohio State University API.
+
+### Views
+
+#### Admin
+
+- **index.html.erb**: Dashboard view for admin user management and course info fetching.
+
+#### Courses
+
+- **form.html.erb**: Shared form partial for course creation and editing.
+- **index.html.erb**: View for listing courses.
+- **new.html.erb**: View for creating a new course.
+- **edit.html.erb**: View for editing an existing course.
+- **show.html.erb**: View for displaying course details.
+- **reload_courses.html.erb**: View for reloading course information from an The Ohio State University source.
+
+#### Devise
+
+- **Confirmations**: Views for resending confirmation instructions.
+- **Mailer**: Email templates for user confirmation, email change, password change, and account unlock notifications.
+- **Passwords**: Views for editing and resetting passwords.
+- **Registrations**: Views for user profile editing and registration.
+- **Sessions**: Views for user login.
+- **Shared**: Shared views for error messages and links.
+- **Unlocks**: Views for resending unlock instructions.
+
+#### Home
+
+- **index.html.erb**: Home page view.
+
 
 ## Features
 
@@ -140,6 +177,10 @@ This directory contains the main Rails server application.
 - **Delete a Course:**
     - Click on the 'Destroy' button next to the course you want to delete.
     - Confirm the deletion in the popup.
+      
+- **Search/Filter a Course:**
+    - Click on the search function to search for a course name.
+    - Filter course based on course info. 
 
 ### Section Management
 
@@ -154,3 +195,23 @@ This directory contains the main Rails server application.
 - **Delete a Section:**
     - Click on the 'Destroy' button next to the section you want to delete.
     - Confirm the deletion in the popup.
+ 
+ ### User Registration and Login
+
+- Users can register for an account and log in:
+- Admins need to approve new admins/instructors before they can access the system.
+- Users that register with student role get approved automatically.
+ 
+## Testing
+
+To run the test suite, execute:
+```sh
+rails test
+```
+
+## Contributing
+- Guilherme Oliveira
+- Camron Vonner
+- Nasser
+- Elbek
+- Jarret
