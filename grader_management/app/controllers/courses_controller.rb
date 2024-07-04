@@ -55,13 +55,13 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-      @course = Course.find(params[:id])
-      if @course.destroy
-        flash[:notice] = "Course has been deleted successfully."
-      else
-        flash[:alert] = "Error deleting course."
-      end
-      redirect_to courses_path
+    @course = Course.find(params[:id])
+    @course.destroy
+    respond_to do |format|
+      format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
+      format.json { head :no_content }
+      format.js
+    end
   end
 
   def do_reload_courses
