@@ -1,22 +1,87 @@
-# Grader Management System
 
-## Overview
+# 2024-su-Team-2-Lab-2
 
-The Grader Management System (CourseInsight) is a web application designed to streamline the management of course information, student enrollments, and instructor assignments for the Computer Science and Engineering department at Ohio State University. This system provides functionalities for students, instructors, and administrators to manage course-related activities efficiently.
+## Project Overview
 
-## Features
+This project is a web application developed using Ruby on Rails for viewing and managing OSU CSE courses. It allows administrators to manage courses, sections, and users, providing functionalities like adding, editing, and deleting records.
 
-- **User Authentication and Authorization**: Secure login and registration for students, instructors, and administrators using Devise.
-- **Course Management**: Create, read, update, and delete course information.
-- **User Management**: Administrators can approve or reject user registration requests.
-- **Section Management**: View sections of courses including assignments of instructors and enrollments of students.
-- **Fetch Class Info/Reload Course**: Fetch course information from The Ohio State University API.
+## Table of Contents
 
-## Project Structure
+1. [Project Setup](#project-setup)
+2. [Directory Structure](#directory-structure)
+3. [Directory Contents](#directory-contents)
+4. [Features](#features)
+5. [Usage](#usage)
+6. [Contributing](#contributing)
 
-### Assets
+## Project Setup
 
-- **Stylesheets**: Contains the main stylesheet for the application.
+To set up the project locally, follow these steps:
+
+1. **Clone the repository:**
+    ```sh
+    git clone https://github.com/yourusername/2024-su-Team-2-Lab-2.git
+    cd 2024-su-Team-2-Lab-2
+    ```
+
+2. **Install dependencies:**
+    ```sh
+    cd server
+    bundle install
+    ```
+
+3. **Set up the database:**
+    ```sh
+    rails db:create
+    rails db:migrate
+    rails db:seed
+    ```
+
+4. **Start the Rails server:**
+    ```sh
+    rails server
+    ```
+
+5. **Access the application:**
+    Open your browser and go to `http://localhost:3000`.
+
+## Directory Structure
+
+Here is an overview of the project directory structure:
+
+```
+2024-su-Team-2-Lab-2/
+├── grader_management/
+│   ├── app/
+│   ├── bin/
+│   ├── config/
+│   ├── db/
+│   ├── lib/
+│   ├── log/
+│   ├── public/
+│   ├── storage/
+│   ├── test/
+│   ├── tmp/
+│   ├── vendor/
+├── server/
+│   ├── app/
+│   ├── bin/
+│   ├── config/
+│   ├── db/
+│   ├── lib/
+│   ├── log/
+│   ├── public/
+│   ├── storage/
+│   ├── test/
+│   ├── tmp/
+│   ├── vendor/
+├── .gitignore
+├── README.md
+├── fetchCourseData.rb
+├── project_structure.txt
+```
+
+## Directory Contents
 
 ### Controllers
 
@@ -87,62 +152,66 @@ The Grader Management System (CourseInsight) is a web application designed to st
 
 #### Home
 
-- **index.html.erb**: Home page view.
+- **index.html.erb**: Home page view. ![Home Page](LandingPage.png)
 
-## Setup Instructions
 
-### Prerequisites
+## Features
 
-- Ruby (version 2.7.2 or higher)
-- Rails (version 6.1.4 or higher)
-- PostgreSQL
-
-### Installation
-
-1. **Clone the repository**:
-    ```sh
-    git clone https://github.com/cse-3901-sharkey/2024-su-Team-2-Lab-2.git
-    ```
-
-2. **Install dependencies**:
-    ```sh
-    bundle install
-    npm install
-    ```
-
-3. **Setup the database**:
-    ```sh
-    rails db:create
-    rails db:migrate
-    ```
-
-4. **Run the Rails server**:
-    ```sh
-    rails server
-    ```
-
-5. **Access the application**:
-    Open your web browser and navigate to `http://localhost:3000`.
+- **Course Management:** Add, edit, delete courses.
+- **Section Management:** Add, edit, delete sections.
+- **User Management:** Devise-based authentication for users and editing. ![Edit Page](EditUser.png)
+- **JavaScript Integration:** Uses Turbo and Stimulus for enhanced user experience.
 
 ## Usage
 
-### Admin Dashboard
+### Course Management![Course Listing](CourseListing.png)
 
-- Admin users can manage other users, approve registration requests, and manage (edit, delete, and reload) course information from The Ohio State University API.
+- **Add a Course:**
+    - Navigate to the courses section and click on 'New Course'.
+    - Fill in the course details and submit.
 
-### Course Management
+- **Edit a Course:**
+    - Click on the 'Edit' button next to the course you want to edit.
+    - Update the details and save.
 
-- Create, view, edit, and delete courses.
-- Fetch and display course information from The Ohio State University API.
+- **Delete a Course:**
+    - Click on the 'Destroy' button next to the course you want to delete.
+    - Confirm the deletion in the popup.
+      
+- **Search/Filter a Course:**
+    - Click on the search function to search for a course name.
+    - Filter course based on course info. 
 
-### User Registration and Login
+### Section Management
+
+- **Add a Section:**
+    - Navigate to the sections section and click on 'New Section'.
+    - Fill in the section details and submit.
+
+- **Edit a Section:**
+    - Click on the 'Edit' button next to the section you want to edit.
+    - Update the details and save.
+
+- **Delete a Section:**
+    - Click on the 'Destroy' button next to the section you want to delete.
+    - Confirm the deletion in the popup.
+ 
+ ### User Registration and Login ![Login Page](LoginPage.png)
 
 - Users can register for an account and log in:
 - Admins need to approve new admins/instructors before they can access the system.
 - Users that register with student role get approved automatically.
-
+ 
 ## Testing
 
 To run the test suite, execute:
 ```sh
 rails test
+```
+
+## Contributing
+- Guilherme Oliveira
+- Camron Vonner
+- Nasser
+- Elbek
+- Jarret
