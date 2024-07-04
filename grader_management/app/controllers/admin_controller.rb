@@ -9,8 +9,11 @@ class AdminController < ApplicationController
   end
 
   def approve_requests
-    user = User.find(params[:user_id])
-    if user.update_column(:approved, params[:approved])
+    Rails.logger.debug "Params: #{params.inspect}" # Debugging output
+    user = User.find_by(id: params[:user_id]) # Use find_by to avoid exception if not found
+    if user.nil?
+      redirect_to admin_index_path, alert: 'User not found.'
+    elsif user.update_column(:approved, params[:approved])
       redirect_to admin_index_path, notice: 'User approval status updated successfully.'
     else
       redirect_to admin_index_path, alert: 'Failed to update user approval status.'
