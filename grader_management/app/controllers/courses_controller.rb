@@ -12,7 +12,6 @@ class CoursesController < ApplicationController
       @courses = @courses.search(search_term)
     end
 
-# Ensures courses are sorted by the specific attribute that the user chooses
     if params[:sort_by].present?
       @courses = @courses.sort_by_column(params[:sort_by])
     end
