@@ -10,7 +10,7 @@ The Grader Management System (CourseInsight) is a web application designed to st
 - **Course Management**: Create, read, update, and delete course information.
 - **User Management**: Administrators can approve or reject user registration requests.
 - **Section Management**: View sections of courses including assignments of instructors and enrollments of students.
-- **Fetch Class Info**: Fetch course information from The Ohio State University API.
+- **Fetch Class Info/Reload Course**: Fetch course information from The Ohio State University API.
 
 ## Project Structure
 
