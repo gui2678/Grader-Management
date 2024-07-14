@@ -19,3 +19,17 @@ production:
   database: grader_management_production
   username: grader_management
   password: <%= ENV["GRADER_MANAGEMENT_DATABASE_PASSWORD"] %>
+
+new_development:
+  <<: *default
+  database: new_grader_management_development
+
+new_test:
+  <<: *default
+  database: new_grader_management_test
+
+new_production:
+  <<: *default
+  database: new_grader_management_production
+  username: new_grader_management
+  password: <%= ENV["NEW_GRADER_MANAGEMENT_DATABASE_PASSWORD"] %>

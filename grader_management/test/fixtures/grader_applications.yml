@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  phone: MyString
+  grad_year: 1
+  gpa: 9.99
+  experience: MyText
+  comments: MyText
+  course: one
+  section: one
+
+two:
+  user: two
+  phone: MyString
+  grad_year: 1
+  gpa: 9.99
+  experience: MyText
+  comments: MyText
+  course: two
+  section: two
