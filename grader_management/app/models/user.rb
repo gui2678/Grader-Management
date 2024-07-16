@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :sections, foreign_key: 'instructor_id'
   has_many :enrollments, foreign_key: 'student_id'
   has_many :approvals
+  has_many :grader_applications
+  has_many :availabilities
 
   # Define user roles
   enum role: {student: 'student', instructor: 'instructor', admin: 'admin'}
