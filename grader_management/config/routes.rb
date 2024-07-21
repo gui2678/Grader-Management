@@ -1,3 +1,4 @@
+# config/routes.rb
 Rails.application.routes.draw do
   # devise setting
   devise_for :users, controllers:{
@@ -31,4 +32,6 @@ Rails.application.routes.draw do
   # root path
   root to: "home#index"
 
+  # catch-all route for errors
+  match '*unmatched', to: 'errors#not_found', via: :all
 end
