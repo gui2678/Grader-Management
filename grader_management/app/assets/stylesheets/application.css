@@ -3,3 +3,12 @@
  *= require_self
  *= require_tree .
  */
+ .dropdown-item {
+    position: relative;
+    z-index: 1040; /*higher than flash*/
+  }
+  .alert{
+    position: relative;
+    z-index: 10;
+   
+  }

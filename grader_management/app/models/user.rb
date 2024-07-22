@@ -25,7 +25,7 @@ class User < ApplicationRecord
   before_create :set_default_role
 
   def active_for_authentication?
-    super && (approved? || role == 'student' || role == 'admin')
+    super && (approved? || role == 'student' || role== 'instructor'|| role == 'admin')
   end
 
   def inactive_message
