@@ -1,26 +1,30 @@
 # config/routes.rb
 Rails.application.routes.draw do
-  # devise setting
-  devise_for :users, controllers:{
+  # Devise settings
+  devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
   }
 
-  # user sign-out
+  # User sign-out
   devise_scope :user do
     get 'users/sign_out', to: 'devise/sessions#destroy'
   end
 
-  # admin routes
-  get 'admin/index'
-  get 'admin/approve_requests'
-  get 'approve_requests', to: 'admin#approve_requests'
-  get 'admin/database-test', to: 'admin#test'
-  post 'admin/fetch_class_info', to: 'admin#fetch_class_info', as: 'admin_fetch_class_info'
+  # Admin routes
+  authenticated :user, ->(u) { u.admin? && u.approved? } do
+    namespace :admin do
+      get 'index'
+      get 'approve_requests'
+      get 'database-test', to: 'admin#test'
+      post 'fetch_class_info', to: 'admin#fetch_class_info'
+    end
+  end
 
-  # home routes
+  # Home routes
   get 'home/index'
-  # course routes
+
+  # Course routes
   resources :courses do
     collection do
       get 'reload_courses'
@@ -29,9 +33,9 @@ Rails.application.routes.draw do
     resources :sections, only: [:index, :show]
   end
 
-  # root path
+  # Root path
   root to: "home#index"
 
-  # catch-all route for errors
+  # Catch-all route for errors
   match '*unmatched', to: 'errors#not_found', via: :all
 end

@@ -1,3 +1,4 @@
+<!-- app/views/layouts/application.html.erb -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,8 +35,7 @@
     .custom-popup .close-btn:hover {
         color: #000;
     }
-    
-</style>
+    </style>
 </head>
 
 <body>
@@ -62,7 +62,7 @@
                 <% if user_signed_in? %>
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <%= "#{current_user.first_name}#{current_user.last_name}" %>
+                            <%= "#{current_user.first_name} #{current_user.last_name}" %>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><%= link_to 'Change Password', edit_user_registration_path, class: 'dropdown-item' %></li>
@@ -78,6 +78,12 @@
     </nav>
 
     <div class="container my-5">
+        <% if flash[:alert] %>
+          <div class="alert alert-danger"><%= flash[:alert] %></div>
+        <% elsif flash[:notice] %>
+          <div class="alert alert-success"><%= flash[:notice] %></div>
+        <% end %>
+
         <%= yield %>
     </div>
     <div id="custom-popup" class="custom-popup">
@@ -87,8 +93,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        <% if @flash_notice %>
-            document.getElementById('popup-message').textContent = "<%= j @flash_notice %>";
+        <% if flash[:notice] %>
+            document.getElementById('popup-message').textContent = "<%= j flash[:notice] %>";
             document.getElementById('custom-popup').classList.add('active');
         <% end %>
     </script>

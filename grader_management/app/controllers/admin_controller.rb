@@ -1,4 +1,6 @@
+# app/controllers/admin_controller.rb
 class AdminController < ApplicationController
+  require 'devise'
   before_action :authenticate_user!
   before_action :check_admin
   skip_before_action :verify_authenticity_token, only: [:fetch_class_info]
@@ -33,6 +35,10 @@ class AdminController < ApplicationController
   private
 
   def check_admin
-    redirect_to(root_path, alert: 'Not authorized') unless current_user.admin?
+    if current_user.admin? && !current_user.approved?
+      flash[:alert] = 'Your account is not approved yet. You have student access.'
+    elsif !current_user.admin?
+      redirect_to root_path, alert: 'Not authorized'
+    end
   end
 end
