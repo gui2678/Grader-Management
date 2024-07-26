@@ -1,7 +1,7 @@
 <head>
   <% content_for :title, 'User Management' %>
-
 </head>
+
 <h1>Admin Dashboard</h1>
 <h2>Users</h2>
 
@@ -25,14 +25,11 @@
           <td><%= user.last_name %></td>
           <td><%= user.role %></td>
           <td class="text-center ml-3">
-            <%= form_with url: '/approve_requests', id:"user_form"+user.id.to_s,method: :put, class: 'd-flex align-items-center' do |form| %>
-              <%= form.text_field :user_id, type: 'hidden', value: user.id %>
-              <%= form.check_box "approved", checked: user.approved?, class: 'form-check-input' %>
-            <% end %>
-          </td>
-          <td>
-            <%= submit_tag "Save", class: 'btn btn-primary btn-sm ml-2', form: 'user_form'+user.id.to_s %>
-
+         <%= form_with(url: approve_requests_path, method: :get, local: true, class: 'd-flex align-items-center') do |form| %>
+          <%= form.hidden_field :user_id, value: user.id %>
+          <%= form.check_box :approved, checked: user.approved?, class: 'form-check-input' %>
+          <%= form.submit 'Save', class: 'btn btn-primary btn-sm ml-2' %>
+        <% end %>
           </td>
         </tr>
       <% end %>
