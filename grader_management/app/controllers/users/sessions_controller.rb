@@ -19,7 +19,7 @@ class Users::SessionsController < Devise::SessionsController
           redirect_to '/home/index'
         else
           puts "User is not approved"
-         # redirect_to '/home/index', notice: 'You have limited access as a student until your account is approved.'
+         redirect_to '/home/index', notice: 'You have limited access as a student until your account is approved.'
         end
       else
         puts "Password is invalid"
