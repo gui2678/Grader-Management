@@ -108,7 +108,10 @@
     <div class="container my-5">
         <%= yield %>
     </div>
-    
+    <div id="custom-popup" class="custom-popup">
+        <span class="close-btn" onclick="document.getElementById('custom-popup').classList.remove('active')">&times;</span>
+        <p id="popup-message"></p>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
