@@ -3,7 +3,7 @@
   <h1>Listing courses</h1>
   <div class="header">
     <div></div>
-    <% if user_signed_in? && current_user.admin? %>
+    <% if user_signed_in? && current_user.admin? && current_user.approved? %>
       <%= link_to 'New Course', new_course_path, class: 'btn btn-primary' %>
       <%= link_to 'Reload Courses', reload_courses_courses_path, class: 'btn btn-warning' %>
     <% end %>

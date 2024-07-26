@@ -1,9 +1,7 @@
-# app/controllers/admin_controller.rb
 class AdminController < ApplicationController
-  require 'devise'
-  before_action :authenticate_user!
   before_action :check_admin
   skip_before_action :verify_authenticity_token, only: [:fetch_class_info, :approve_requests]
+
   def index
     @users = User.all
     @courses = Course.all
@@ -32,15 +30,5 @@ class AdminController < ApplicationController
     fetcher = FetchClassInfo.new(term: params[:term], campus: params[:campus])
     fetcher.call
     redirect_to admin_database_test_path, notice: 'Class information fetched successfully.'
-  end
-
-  private
-
-  def check_admin
-    if current_user.admin? && !current_user.approved?
-      flash[:alert] = 'Your account is not approved yet. You have student access.'
-    elsif !current_user.admin?
-      redirect_to root_path, alert: 'Not authorized'
-    end
   end
 end

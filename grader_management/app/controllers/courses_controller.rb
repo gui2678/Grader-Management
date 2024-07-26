@@ -1,8 +1,8 @@
 class CoursesController < ApplicationController
   include Pagy::Backend
   before_action :authenticate_user!
-  before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
-
+  before_action :verify_admin, only: [:do_reload_courses, :new, :create, :edit, :update, :destroy, :do_reload_courses]
+  
   def index
     @pagy, @courses = pagy(Course.all, items: 10)
 
