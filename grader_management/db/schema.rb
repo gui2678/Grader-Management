@@ -57,31 +57,27 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_23_225505) do
     t.string "subject_desc"
     t.text "course_attributes"
     t.string "course_id"
+    t.string "text"
   end
 
   create_table "enrollments", force: :cascade do |t|
     t.bigint "section_id", null: false
-    t.bigint "user_id", null: false
+    t.integer "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["section_id"], name: "index_enrollments_on_section_id"
-    t.index ["user_id"], name: "index_enrollments_on_user_id"
   end
 
   create_table "sections", force: :cascade do |t|
-    t.string "name"
-    t.integer "course_id"
-    t.string "class_number"
-    t.string "component"
-    t.time "start_time"
-    t.time "end_time"
-    t.string "days"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "section_number"
+    t.bigint "course_id", null: false
+    t.integer "instructor_id"
     t.string "term"
     t.string "campus"
     t.string "schedule"
-    t.integer "instructor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_sections_on_course_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -109,5 +105,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_23_225505) do
 
   add_foreign_key "approvals", "users"
   add_foreign_key "enrollments", "sections"
-  add_foreign_key "enrollments", "users"
+  add_foreign_key "sections", "courses"
 end

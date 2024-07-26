@@ -1,5 +1,7 @@
-class AddInstructorIdToSections < ActiveRecord::Migration[7.0]
+class AddInstructorIdToSections < ActiveRecord::Migration[6.0]
   def change
-    add_column :sections, :instructor_id, :integer
+    unless column_exists?(:sections, :instructor_id)
+      add_column :sections, :instructor_id, :integer
+    end
   end
 end

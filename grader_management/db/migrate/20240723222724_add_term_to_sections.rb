@@ -1,7 +1,7 @@
-class AddTermToSections < ActiveRecord::Migration[7.0]
+class AddTermToSections < ActiveRecord::Migration[6.0]
   def change
-    add_column :sections, :term, :string
-    add_column :sections, :campus, :string
-    add_column :sections, :schedule, :string
+    unless column_exists?(:sections, :term)
+      add_column :sections, :term, :string
+    end
   end
 end

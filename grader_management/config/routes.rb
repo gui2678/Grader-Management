@@ -12,12 +12,13 @@ Rails.application.routes.draw do
 
   # admin routes
   get 'admin/index'
-  put 'approve_requests', to: 'admin#approve_requests' # Ensure this is a PUT route
+  get 'approve_requests', to: 'admin#approve_requests'
   get 'admin/database-test', to: 'admin#test'
   post 'admin/fetch_class_info', to: 'admin#fetch_class_info', as: 'admin_fetch_class_info'
 
   # home routes
   get 'home/index'
+  
   # course routes
   resources :courses do
     collection do
