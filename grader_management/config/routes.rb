@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
-  # Devise settings
-=======
   # devise setting
->>>>>>> e67b9746ebbd4c02dc2911aee4a1605213aedc37
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
