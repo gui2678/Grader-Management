@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema[7.0].define(version: 2024_07_26_181433) do
-=======
-ActiveRecord::Schema[7.0].define(version: 2024_07_26_024343) do
->>>>>>> origin/nasser
+ActiveRecord::Schema[7.0].define(version: 2024_07_27_173247) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,22 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_26_024343) do
     t.index ["section_id"], name: "index_enrollments_on_section_id"
   end
 
-  create_table "grader_applications", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "phone"
-    t.integer "grad_year"
-    t.decimal "gpa"
-    t.text "experience"
-    t.text "comments"
-    t.bigint "course_id", null: false
-    t.bigint "section_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_grader_applications_on_course_id"
-    t.index ["section_id"], name: "index_grader_applications_on_section_id"
-    t.index ["user_id"], name: "index_grader_applications_on_user_id"
-  end
-
   create_table "meetings", force: :cascade do |t|
     t.bigint "section_id", null: false
     t.bigint "instructor_id"
@@ -129,28 +109,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_26_024343) do
     t.datetime "updated_at", null: false
     t.index ["instructor_id"], name: "index_meetings_on_instructor_id"
     t.index ["section_id"], name: "index_meetings_on_section_id"
-  end
-
-  create_table "grader_applications", force: :cascade do |t|
-    t.string "display_name", null: false
-    t.string "first_name", null: false
-    t.string "middle_name", null: false
-    t.string "last_name", null: false
-    t.string "legal_last_name", null: false
-    t.string "name_suffix"
-    t.string "username", null: false
-    t.string "email", null: false
-    t.string "address", null: false
-    t.string "phone", null: false
-    t.bigint "user_id"
-    t.bigint "course_id"
-    t.bigint "section_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "approved", default: false
-    t.index ["course_id"], name: "index_grader_applications_on_course_id"
-    t.index ["section_id"], name: "index_grader_applications_on_section_id"
-    t.index ["user_id"], name: "index_grader_applications_on_user_id"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -183,6 +141,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_26_024343) do
     t.date "end_date"
     t.string "auto_enroll_section1"
     t.string "auto_enroll_section2"
+    t.integer "waitlist_total"
     t.string "section"
     t.integer "course_offering_number"
     t.string "academic_group"
@@ -202,7 +161,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_26_024343) do
     t.string "sec_academic_group"
     t.string "sec_catalog_number"
     t.string "meeting_days"
-    t.integer "waitlist_total"
+    t.integer "number_of_graders"
     t.index ["course_id"], name: "index_sections_on_course_id"
   end
 
@@ -232,11 +191,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_26_024343) do
   add_foreign_key "approvals", "users"
   add_foreign_key "availabilities", "users"
   add_foreign_key "enrollments", "sections"
-  add_foreign_key "grader_applications", "courses"
-  add_foreign_key "grader_applications", "sections"
-  add_foreign_key "grader_applications", "users"
   add_foreign_key "meetings", "sections"
   add_foreign_key "meetings", "users", column: "instructor_id"
   add_foreign_key "sections", "courses"
-  add_foreign_key "enrollments", "users"
 end
