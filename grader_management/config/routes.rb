@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   # Home routes
   get 'home/index'
 
-  # Course routes
+  # course routes
   resources :courses do
     collection do
       get 'reload_courses'
@@ -32,7 +32,15 @@ Rails.application.routes.draw do
     resources :sections, only: [:index, :show]
   end
 
-  # Root path
+  #Grader Applications routes
+
+  resources :grader_applications do
+    member do
+      patch 'approve'
+    end
+  end
+
+  # root path
   root to: "home#index"
 
   # Catch-all route for errors

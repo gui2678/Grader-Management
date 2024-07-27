@@ -8,41 +8,35 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-# example admin user
-admin = User.find_or_create_by!(
-  email: 'admin@osu.edu',
-  first_name: 'Admin',
-  last_name: 'User',
-  role: 'admin',
-  approved: true
-)
-admin.password = 'password'
-admin.password_confirmation = 'password'
-admin.save!
+# Example users
+admin = User.find_or_create_by!(email: 'admin@osu.edu') do |user|
+  user.password = 'password'
+  user.password_confirmation = 'password'
+  user.first_name = 'Admin'
+  user.last_name = 'User'
+  user.role = 'admin'
+  user.approved = true
+end
 
-instructor = User.find_or_create_by!(
-  email: 'instructor@osu.edu',
-  first_name: 'Instructor',
-  last_name: 'User',
-  role: 'instructor',
-  approved: true
-)
-instructor.password = 'password'
-instructor.password_confirmation = 'password'
-instructor.save!
+instructor = User.find_or_create_by!(email: 'instructor@osu.edu') do |user|
+  user.password = 'password'
+  user.password_confirmation = 'password'
+  user.first_name = 'Instructor'
+  user.last_name = 'User'
+  user.role = 'instructor'
+  user.approved = true
+end
 
-student = User.find_or_create_by!(
-  email: 'student@osu.edu',
-  first_name: 'Student',
-  last_name: 'User',
-  role: 'student',
-  approved: true
-)
-student.password = 'password'
-student.password_confirmation = 'password'
-student.save!
+student = User.find_or_create_by!(email: 'student@osu.edu') do |user|
+  user.password = 'password'
+  user.password_confirmation = 'password'
+  user.first_name = 'Student'
+  user.last_name = 'User'
+  user.role = 'student'
+  user.approved = true
+end
 
-# example courses
+# Example courses
 course1 = Course.find_or_create_by!(
   course_number: 'CSE101',
   course_name: 'Introduction to Computer Science',
@@ -57,7 +51,7 @@ course2 = Course.find_or_create_by!(
   credits: 3
 )
 
-# example sections for the courses
+# Example sections for the courses
 Section.find_or_create_by!(
   name: 'Section 1',
   course: course1,
@@ -69,7 +63,8 @@ Section.find_or_create_by!(
   instructor: instructor,
   term: 'Fall 2023',
   campus: 'Main',
-  schedule: 'MWF 10:00-10:50'
+  schedule: 'MWF 10:00-10:50',
+  section_number: 1
 )
 
 Section.find_or_create_by!(
@@ -83,5 +78,6 @@ Section.find_or_create_by!(
   instructor: instructor,
   term: 'Fall 2023',
   campus: 'Main',
-  schedule: 'TTh 11:00-12:15'
+  schedule: 'TTh 11:00-12:15',
+  section_number: 2
 )
