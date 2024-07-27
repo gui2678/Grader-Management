@@ -1,4 +1,3 @@
-# config/initializers/devise.rb
 Devise.setup do |config|
   require 'devise/orm/active_record'
 
@@ -19,7 +18,10 @@ Devise.setup do |config|
   config.expire_all_remember_me_on_sign_out = true
 
   config.password_length = 6..128
-  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+
+  # Enforce email format to be name.#@osu.edu with a period before the number
+  config.email_regexp = /\A[a-zA-Z0-9._%+-]+\.\d+@osu\.edu\z/
+
   config.reset_password_within = 6.hours
 
   config.sign_out_via = :delete
