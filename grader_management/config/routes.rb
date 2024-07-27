@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   # home routes
   get 'home/index'
+
   # course routes
   resources :courses do
     collection do
@@ -25,6 +26,14 @@ Rails.application.routes.draw do
       post 'do_reload_courses'
     end
     resources :sections, only: [:index, :show]
+  end
+
+  #Grader Applications routes
+
+  resources :grader_applications do
+    member do
+      patch 'approve'
+    end
   end
 
   # root path

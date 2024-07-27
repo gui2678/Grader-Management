@@ -1,0 +1,71 @@
+<%= form_with(model: grader_application, local: true) do |form| %>
+  <% if grader_application.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(grader_application.errors.count, "error") %> prohibited this grader_application from being saved:</h2>
+
+      <ul>
+      <% grader_application.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :display_name %>
+    <%= form.text_field :display_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :middle_name %>
+    <%= form.text_field :middle_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :legal_last_name %>
+    <%= form.text_field :legal_last_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name_suffix %>
+    <%= form.text_field :name_suffix %>
+  </div>
+
+  <div class="field">
+    <%= form.label :username %>
+    <%= form.text_field :username %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.text_field :address %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phone %>
+    <%= form.text_field :phone %>
+  </div>
+
+  <div class="field">
+    <%= form.label :course_id %>
+    <%= form.collection_select :course_id, Course.all, :id, :course_name, prompt: 'Select a Course' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :section_id %>
+    <%= form.collection_select :section_id, Section.all, :id,

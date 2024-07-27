@@ -52,6 +52,13 @@
                 <% if user_signed_in? && current_user.admin? %>
                   <%= link_to 'Approve Requests', "/approve_requests", class: 'text-no-decoration' %>
                 <% end %>
+            </div>
+            <div style="margin-right: 15px;">
+                <% if user_signed_in? && current_user.student? %>
+                  <% application = current_user.grader_applications.first %>
+                    <%= link_to 'Application', grader_applications_path(id: current_user.id), class: 'text-no-decoration' %>
+                  
+                <% end %>
               </div>
               <div style="margin-right: 5px;">
                 <% if user_signed_in?%>

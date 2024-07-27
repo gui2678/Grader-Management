@@ -43,6 +43,15 @@ body {
   margin: 0 auto;
 }
 
+.form-content {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7); /* To make text more readable */
+  border-radius: 10px;
+  width: 90%;
+  margin: 0 auto;
+}
 .field-group {
   display: flex;
   flex-direction: column;

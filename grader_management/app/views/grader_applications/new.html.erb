@@ -1,0 +1,89 @@
+<h1>New Grader Application</h1>
+
+<%= form_with model: @grader_application, local: true do |form| %>
+  <% if @grader_application.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@grader_application.errors.count, "error") %> prohibited this application from being saved:</h2>
+      <ul>
+        <% @grader_application.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="form-content">
+    
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= form.label :display_name %>
+        <%= form.text_field :display_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :first_name %>
+        <%= form.text_field :first_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :middle_name %>
+        <%= form.text_field :middle_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :last_name %>
+        <%= form.text_field :last_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :legal_last_name %>
+        <%= form.text_field :legal_last_name, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= form.label :name_suffix %>
+        <%= form.text_field :name_suffix, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :username %>
+        <%= form.text_field :username, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :email %>
+        <%= form.email_field :email, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :address %>
+        <%= form.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :phone %>
+        <%= form.telephone_field :phone, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :course_id, 'Select Course' %>
+    <%= form.collection_select :course_id, Course.all, :id, :course_name, { prompt: 'Select a Course' }, { class: 'form-select' } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :section_id, 'Select Section' %>
+    <%= form.collection_select :section_id, Section.all, :id, :section_number, { prompt: 'Select a Section' }, { class: 'form-select' } %>
+  </div>
+
+  <div class="form-group mt-3">
+    <%= form.submit 'Submit Application', class: 'btn btn-primary' %>
+  </div>
+</div>
+  
+<% end %>
+
+<%= link_to 'Back to Applications', grader_applications_path, class: 'btn btn-secondary mt-3' %>

@@ -1,0 +1,66 @@
+<% content_for :title, 'Application Details' %>
+<div class="admin-content">
+  <h1>Application Details</h1>
+  
+  <div class="table-responsive">
+    <table class="table" style="color: white;">
+      <tbody>
+        <tr>
+          <th>Display Name</th>
+          <td><%= @grader_application.display_name %></td>
+        </tr>
+        <tr>
+          <th>First Name</th>
+          <td><%= @grader_application.first_name %></td>
+        </tr>
+        <tr>
+          <th>Middle Name</th>
+          <td><%= @grader_application.middle_name %></td>
+        </tr>
+        <tr>
+          <th>Last Name</th>
+          <td><%= @grader_application.last_name %></td>
+        </tr>
+        <tr>
+          <th>Legal Last Name</th>
+          <td><%= @grader_application.legal_last_name %></td>
+        </tr>
+        <tr>
+          <th>Name Suffix</th>
+          <td><%= @grader_application.name_suffix %></td>
+        </tr>
+        <tr>
+          <th>Username</th>
+          <td><%= @grader_application.username %></td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td><%= @grader_application.email %></td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td><%= @grader_application.address %></td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td><%= @grader_application.phone %></td>
+        </tr>
+        <tr>
+          <th>Course</th>
+          <td><%= @grader_application.course.course_name if @grader_application.course %></td>
+        </tr>
+        <tr>
+          <th>Section</th>
+          <td><%= @grader_application.section.section_number if @grader_application.section %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="d-flex justify-content-between mt-3">
+    <% if user_signed_in? && (current_user == @grader_application.user || current_user.admin?) %>
+      <%= button_to 'Delete Application', @grader_application, method: :delete, data: { confirm: 'Are you sure you want to delete this application?' }, class: 'btn btn-danger' %>
+    <% end %>
+    <%= link_to 'Back to Applications', grader_applications_path, class: 'btn btn-secondary' %>
+  </div>
+</div>
