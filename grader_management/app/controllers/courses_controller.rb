@@ -2,27 +2,26 @@ class CoursesController < ApplicationController
   include Pagy::Backend
   before_action :authenticate_user!
   before_action :verify_admin, only: [:do_reload_courses, :new, :create, :edit, :update, :destroy, :do_reload_courses]
-  
-  def index
-    @pagy, @courses = pagy(Course.all, items: 10)
 
+  def index
     if params[:search].present?
       search_term = params[:search].downcase
       @courses = Course.search(search_term)
-
-      if @courses.empty?
-        flash.now[:notice] = "No courses found for these params."
-      end
     else
-      # Clear the flash notice if there was no search
+      @pagy, @courses = pagy(Course.all, items: 10)
+    end
+  
+    if @courses.empty?
+      flash.now[:notice] = "No courses found for these params."
+    else
       flash.now[:notice] = nil
     end
-
+  
     if params[:sort_by].present?
       @courses = @courses.sort_by_column(params[:sort_by])
     end
   end
-
+  
   def show
     @course = Course.find(params[:id])
   rescue ActiveRecord::RecordNotFound

@@ -32,8 +32,7 @@ Rails.application.routes.draw do
     resources :sections, only: [:index, :show]
   end
 
-  #Grader Applications routes
-
+  # Grader Applications routes
   resources :grader_applications do
     member do
       patch 'approve'
