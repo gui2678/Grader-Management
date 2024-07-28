@@ -1,3 +1,4 @@
+=begin
 class CreateSections < ActiveRecord::Migration[6.0]
   def change
     unless table_exists?(:sections)
@@ -12,4 +13,4 @@ class CreateSections < ActiveRecord::Migration[6.0]
     end
   end
 end
-
+=end
