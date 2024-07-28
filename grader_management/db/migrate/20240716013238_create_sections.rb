@@ -33,6 +33,7 @@ class CreateSections < ActiveRecord::Migration[6.1]
         t.time :start_time
         t.time :end_time
         t.string :days
+        t.string :schedule
 
         t.timestamps
       end

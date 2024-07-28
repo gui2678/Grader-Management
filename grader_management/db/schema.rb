@@ -66,38 +66,42 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_28_010602) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "meetings", force: :cascade do |t|
-    t.string "name"
-    t.datetime "start_time", precision: nil
-    t.datetime "end_time", precision: nil
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "sections", force: :cascade do |t|
-    t.string "section_number"
+    t.bigint "course_id", null: false
+    t.string "class_number", null: false
+    t.string "section_number", null: false
+    t.string "component", null: false
+    t.string "instruction_mode"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "enrollment_status"
+    t.string "status"
+    t.string "type"
+    t.string "associated_class"
+    t.boolean "auto_enroll_waitlist"
+    t.string "auto_enroll_section1"
+    t.string "auto_enroll_section2"
+    t.boolean "consent"
+    t.integer "waitlist_capacity"
+    t.integer "minimum_enrollment"
+    t.integer "enrollment_total"
+    t.integer "waitlist_total"
+    t.string "location"
+    t.string "primary_instructor_section"
+    t.string "combined_section"
+    t.string "holiday_schedule"
+    t.string "session_code"
+    t.string "session_description"
     t.string "term"
     t.string "campus"
+    t.jsonb "section_attributes"
+    t.time "start_time"
+    t.time "end_time"
+    t.string "days"
     t.string "schedule"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "instructor_id"
-    t.string "instruction_mode"
-    t.string "enrollment_status"
-    t.string "status"
-    t.string "section_type"
-    t.string "associated_class"
-    t.boolean "auto_enroll_waitlist"
-    t.integer "waitlist_capacity"
-    t.integer "enrollment_total"
-    t.string "primary_instructor_section"
-    t.string "session_code"
-    t.string "session_description"
-    t.jsonb "section_attributes"
-    t.date "start_date"
-    t.date "end_date"
-    t.string "auto_enroll_section1"
-    t.string "auto_enroll_section2"
     t.string "section"
     t.integer "course_offering_number"
     t.string "academic_group"
@@ -105,24 +109,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_28_010602) do
     t.string "catalog_number"
     t.string "career"
     t.text "description"
-    t.boolean "consent"
-    t.integer "minimum_enrollment"
     t.string "academic_org"
-    t.string "location"
     t.string "equivalent_course_id"
     t.date "cancel_date"
-    t.string "combined_section"
-    t.string "holiday_schedule"
     t.string "sec_campus"
     t.string "sec_academic_group"
     t.string "sec_catalog_number"
     t.string "meeting_days"
-    t.integer "waitlist_total"
     t.integer "number_of_graders"
     t.string "name"
-    t.time "start_time"
-    t.time "end_time"
-    t.string "days"
+    t.index ["class_number"], name: "index_sections_on_class_number", unique: true
+    t.index ["course_id"], name: "index_sections_on_course_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -149,4 +146,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_28_010602) do
   end
 
   add_foreign_key "approvals", "users"
+  add_foreign_key "sections", "courses"
 end
