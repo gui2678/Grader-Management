@@ -29,9 +29,13 @@ class CreateMeetings < ActiveRecord::Migration[6.1]
       t.string :term unless column_exists?(:sections, :term)
       t.string :campus unless column_exists?(:sections, :campus)
       t.jsonb :attributes unless column_exists?(:sections, :attributes)
+      t.time :start_time unless column_exists?(:sections, :start_time)
+      t.time :end_time unless column_exists?(:sections, :end_time)
+      t.string :days unless column_exists?(:sections, :days)
 
       t.timestamps unless column_exists?(:sections, :created_at)
     end
+    
     add_index :sections, :class_number, unique: true unless index_exists?(:sections, :class_number)
   end
 end
