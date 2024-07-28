@@ -22,6 +22,11 @@ class User < ApplicationRecord
 
   before_create :set_default_role
 
+  # Add the name method
+  def name
+    "#{first_name} #{last_name}"
+  end
+
   def active_for_authentication?
     super && (approved? || role == 'student' || role == 'instructor' || role == 'admin')
   end

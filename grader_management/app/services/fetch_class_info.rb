@@ -66,7 +66,7 @@ class FetchClassInfo
         meeting_days: section_data['meetingDays'],
         start_date: section_data['startDate'],
         end_date: section_data['endDate'],
-        section_attributes_json: section_data['attributes']
+        section_attributes_json: section_data['sectionAttributes'] # renamed from attributes
       )
       if section.save
         Rails.logger.info "Section #{section.section_number} for course #{course.course_number} saved successfully."

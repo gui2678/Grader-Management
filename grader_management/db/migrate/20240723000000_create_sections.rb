@@ -29,7 +29,7 @@ class CreateSections < ActiveRecord::Migration[6.1]
         t.string :session_description
         t.string :term
         t.string :campus
-        t.jsonb :attributes
+        t.jsonb :meeting_attributes_json
         t.time :start_time
         t.time :end_time
         t.string :days

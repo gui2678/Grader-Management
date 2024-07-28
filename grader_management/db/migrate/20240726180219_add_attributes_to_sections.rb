@@ -23,6 +23,6 @@ class AddAttributesToSections < ActiveRecord::Migration[6.1]
     add_column :sections, :session_description, :string unless column_exists?(:sections, :session_description)
     add_column :sections, :term, :string unless column_exists?(:sections, :term)
     add_column :sections, :campus, :string unless column_exists?(:sections, :campus)
-    add_column :sections, :attributes, :jsonb unless column_exists?(:sections, :attributes)
+    add_column :sections, :meeting_attributes_json, :jsonb unless column_exists?(:sections, :meeting_attributes_json)
   end
 end
