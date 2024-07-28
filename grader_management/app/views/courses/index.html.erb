@@ -53,5 +53,5 @@
 </div>
 
 <div class="pagination">
-  <%= raw pagy_nav(@pagy) %>
+  <%= raw(pagy_nav(@pagy)) if @pagy.present? %>
 </div>

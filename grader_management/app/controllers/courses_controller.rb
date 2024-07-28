@@ -7,21 +7,21 @@ class CoursesController < ApplicationController
     if params[:search].present?
       search_term = params[:search].downcase
       @courses = Course.search(search_term)
+      if @courses.empty?
+        flash.now[:notice] = "There are no courses found for these params."
+        @pagy, @courses = pagy(Course.none, items: 10)
+      else
+        @pagy, @courses = pagy(@courses, items: 10)
+      end
     else
       @pagy, @courses = pagy(Course.all, items: 10)
-    end
-  
-    if @courses.empty?
-      flash.now[:notice] = "No courses found for these params."
-    else
-      flash.now[:notice] = nil
     end
   
     if params[:sort_by].present?
       @courses = @courses.sort_by_column(params[:sort_by])
     end
   end
-  
+
   def show
     @course = Course.find(params[:id])
   rescue ActiveRecord::RecordNotFound
