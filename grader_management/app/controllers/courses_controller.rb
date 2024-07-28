@@ -21,9 +21,19 @@ class CoursesController < ApplicationController
   end
 
   def index
-    @pagy, @courses = pagy(Course.all, items: 10)
+    @courses = Course.all
 
-    @flash_notice = flash[:notice] if flash[:notice]
+    if params[:search].present?
+      @courses = @courses.where('course_name ILIKE ? OR course_description ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
+    end
+
+    if params[:sort_by] == 'name'
+      @courses = @courses.order(course_name: :asc)
+    elsif params[:sort_by] == 'date'
+      @courses = @courses.order(created_at: :desc)
+    end
+
+    @pagy, @courses = pagy(@courses, items: 10)
   end
 
   def show
@@ -54,10 +64,10 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find(params[:id])
-
+  
     if @course.update(course_params)
       flash[:notice] = "Success! See below for your updated course!"
-      redirect_to courses_path
+      redirect_to courses_path(search: params[:search], sort_by: params[:sort_by])
     else
       flash.now[:alert] = @course.errors.full_messages.to_sentence
       render 'edit'
@@ -68,11 +78,12 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @course.destroy
     respond_to do |format|
-      format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
+      format.html { redirect_to courses_url(search: params[:search], sort_by: params[:sort_by]), notice: 'Course was successfully destroyed.' }
       format.json { head :no_content }
       format.js
     end
   end
+  
 
   def reload_courses
     
@@ -101,7 +112,7 @@ class CoursesController < ApplicationController
   
   private
   def course_params
-    params.require(:course).permit(:title, :text)
+    params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :term, :effective_date, :effective_status, :title, :short_description, :equivalent_id, :allow_multi_enroll, :max_units, :min_units, :repeat_units_limit, :grading, :component, :primary_component, :offering_number, :academic_group, :subject, :catalog_number, :campus, :academic_org, :academic_career, :cip_code, :campus_code, :catalog_level, :subject_desc, :course_attributes, :course_id)
   end
   def call_fetch_class_info(term, campus)
     fetcher = FetchClassInfo.new(term: term, campus: campus)

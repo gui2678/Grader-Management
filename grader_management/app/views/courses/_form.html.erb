@@ -1,4 +1,7 @@
 <%= form_with model: @course, local: true do |form| %>
+  <%= hidden_field_tag :search, params[:search] %>
+  <%= hidden_field_tag :sort_by, params[:sort_by] %>
+
   <% if @course.errors.any? %>
     <div id="error_explanation">
       <h2>
