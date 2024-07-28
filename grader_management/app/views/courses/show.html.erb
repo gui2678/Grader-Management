@@ -1,43 +1,43 @@
-<div class="home-container d-flex justify-content-center align-items-center">
-  <div class="admin-content">
-    <h1 class="display-4"><%= @course.course_name %></h1>
-    <p class="lead"><%= @course.course_description %></p>
-    <p class="mb-4">Credits: <%= @course.credits %></p>
-    <%= link_to 'Back', courses_path(search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-secondary' %>
-    <%= link_to 'Edit', edit_course_path(@course, search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-primary' %>
-  </div>
-</div>
-
-<div class="sections-container mt-5">
-  <h2>Sections</h2>
-  <% if @course.sections.any? %>
-    <div class="table-responsive">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th>Section Number</th>
-            <th>Instructor</th>
-            <th>Meeting Days</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @course.sections.each do |section| %>
-            <% section.meetings.each do |meeting| %>
-              <tr>
-                <td><%= section.section_number %></td>
-                <td><%= meeting.instructor&.name %></td>
-                <td><%= meeting.meeting_days %></td>
-                <td><%= meeting.start_time %></td>
-                <td><%= meeting.end_time %></td>
-              </tr>
-            <% end %>
-          <% end %>
-        </tbody>
-      </table>
+<div class="course-details-container container my-5">
+  <div class="home-container d-flex justify-content-center align-items-center mb-5">
+    <div class="admin-content text-center">
+      <h1 class="display-4"><%= @course.course_name %></h1>
+      <p class="lead"><%= @course.course_description %></p>
+      <p class="mb-4">Credits: <%= @course.credits %></p>
+      <%= link_to 'Back', courses_path(search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-secondary me-2' %>
+      <%= link_to 'Edit', edit_course_path(@course, search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-primary' %>
     </div>
-  <% else %>
-    <p>No sections available for this course.</p>
-  <% end %>
+  </div>
+
+  <div class="sections-container mt-5">
+    <h2 class="text-center mb-4">Sections</h2>
+    <% if @course.sections.any? %>
+      <% @course.sections.each do |section| %>
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Section <%= section.section_number %></h5>
+            <%= link_to 'View Graders', '#', class: 'btn btn-light' %>
+          </div>
+          <div class="card-body">
+            <p><strong>Instructor:</strong> <%= section.meetings.map { |meeting| meeting.instructors_json&.map { |i| i['displayName'] }&.join(", ") }.uniq.join(", ") %></p>
+            <p><strong>Meeting Days:</strong>
+              <% section.meetings.each do |meeting| %>
+                <%= "M" if meeting.monday %>
+                <%= "T" if meeting.tuesday %>
+                <%= "W" if meeting.wednesday %>
+                <%= "R" if meeting.thursday %>
+                <%= "F" if meeting.friday %>
+                <%= "S" if meeting.saturday %>
+                <%= "U" if meeting.sunday %>
+              <% end %>
+            </p>
+            <p><strong>Start Time:</strong> <%= section.meetings.map { |meeting| meeting.start_time&.strftime("%I:%M %p") }.uniq.join(", ") %></p>
+            <p><strong>End Time:</strong> <%= section.meetings.map { |meeting| meeting.end_time&.strftime("%I:%M %p") }.uniq.join(", ") %></p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-center mt-4">No sections available for this course.</p>
+    <% end %>
+  </div>
 </div>

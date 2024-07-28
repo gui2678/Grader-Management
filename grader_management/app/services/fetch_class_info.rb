@@ -82,9 +82,20 @@ class FetchClassInfo
       Rails.logger.info "Processing meeting data: #{meeting_data.inspect}"
   
       meeting = section.meetings.find_or_initialize_by(meeting_number: meeting_data['meetingNumber'])
+  
+      class_number = section.class_number
+      section_number = section.section_number
+      component = section.component
+  
+      # Log the attributes to ensure they are present
+      Rails.logger.info "Class number: #{class_number}, Section number: #{section_number}, Component: #{component}"
+  
       meeting.assign_attributes(
         course_id: section.course_id,
         section_id: section.id,
+        class_number: class_number,
+        section_number: section_number,
+        component: component,
         facility_id: meeting_data['facilityId'],
         facility_type: meeting_data['facilityType'],
         facility_description: meeting_data['facilityDescription'],
@@ -104,7 +115,8 @@ class FetchClassInfo
         thursday: meeting_data['thursday'],
         friday: meeting_data['friday'],
         saturday: meeting_data['saturday'],
-        sunday: meeting_data['sunday']
+        sunday: meeting_data['sunday'],
+        instructors_json: meeting_data['instructors']
       )
   
       if meeting.save
@@ -114,8 +126,6 @@ class FetchClassInfo
       end
     end
   end
-  
-  
   
   
 end
