@@ -1,26 +1,29 @@
+# app/controllers/admin/courses_controller.rb
 class CoursesController < ApplicationController
   include Pagy::Backend
+
   before_action :authenticate_user!
-  before_action :verify_admin, only: [:do_reload_courses, :new, :create, :edit, :update, :destroy, :do_reload_courses]
-  
+
+  def fetch_class_info
+    term = params[:term]
+    campus = params[:campus]
+    
+    # Initialize and call the FetchClassInfo service
+    fetcher = FetchClassInfo.new(term: term, campus: campus)
+    
+    if fetcher.call
+      flash[:notice] = "Class information imported successfully."
+    else
+      flash[:alert] = "There was an error importing class information."
+    end
+    
+    redirect_to admin_courses_path
+  end
+
   def index
     @pagy, @courses = pagy(Course.all, items: 10)
 
-    if params[:search].present?
-      search_term = params[:search].downcase
-      @courses = Course.search(search_term)
-
-      if @courses.empty?
-        flash.now[:notice] = "No courses found for these params."
-      end
-    else
-      # Clear the flash notice if there was no search
-      flash.now[:notice] = nil
-    end
-
-    if params[:sort_by].present?
-      @courses = @courses.sort_by_column(params[:sort_by])
-    end
+    @flash_notice = flash[:notice] if flash[:notice]
   end
 
   def show
@@ -71,11 +74,18 @@ class CoursesController < ApplicationController
     end
   end
 
+  def reload_courses
+    
+  end
+
   def do_reload_courses
     term = params[:term]
     campus = params[:campus]
-
+  
     if term.present? && campus.present?
+      # Clear existing courses
+      Course.delete_all
+  
       if call_fetch_class_info(term, campus)
         flash[:notice] = "Class information imported successfully."
       else
@@ -86,13 +96,13 @@ class CoursesController < ApplicationController
     end
     redirect_to courses_path
   end
+  
 
+  
   private
-
   def course_params
-    params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
+    params.require(:course).permit(:title, :text)
   end
-
   def call_fetch_class_info(term, campus)
     fetcher = FetchClassInfo.new(term: term, campus: campus)
 
@@ -102,6 +112,10 @@ class CoursesController < ApplicationController
       Rails.logger.error "FetchClassInfo service failed for term: #{term}, campus: #{campus}"
       false
     end
+  end
+
+  def course_params
+    params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
   end
 
   def verify_admin

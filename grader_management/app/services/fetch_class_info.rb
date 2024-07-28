@@ -4,59 +4,107 @@ class FetchClassInfo
 
   BASE_URL = 'https://contenttest.osu.edu/v2/classes/search'
 
-  def initialize(term:, campus:)
-    @term = term
-    @campus = campus
+  def initialize(term:, campus:, page: 1, subject: 'cse')
+    @options = "?q=" + subject + "&campus=" + campus + "&term=" + term + "&p=" + page.to_s
   end
 
   def call
-    response = fetch_class_info
-    process_response(response) if response
+    url = URI(BASE_URL + @options)
+    Rails.logger.info "Making API request to: #{url}"
+
+    response = fetch_class_info(url)
+
+    if response
+      Rails.logger.info "API response received: #{response.inspect}"
+      process_response(response)
+    else
+      Rails.logger.error "Error fetching class info"
+      raise "Error fetching class info"
+    end
   rescue StandardError => e
     Rails.logger.error "Exception in FetchClassInfo: #{e.message}\n#{e.backtrace.join("\n")}"
-    raise "Exception in FetchClassInfo: #{e.message}"
   end
 
   private
 
-  def fetch_class_info
-    url = URI("#{BASE_URL}?q=cse&campus=#{@campus}&term=#{@term}&p=1")
-    response = Net::HTTP.get(url)
-    JSON.parse(response)
+  def fetch_class_info(url)
+    response = Net::HTTP.get_response(url)
+    if response.is_a?(Net::HTTPSuccess)
+      JSON.parse(response.body)
+    else
+      Rails.logger.error "HTTP request failed: #{response.code} - #{response.message}"
+      nil
+    end
   rescue JSON::ParserError => e
     Rails.logger.error "JSON::ParserError in FetchClassInfo: #{e.message}\n#{e.backtrace.join("\n")}"
     nil
   end
 
-  def process_response(response)
-    courses_data = response['data']['courses']
-    courses_data.each do |course_data|
-      process_course(course_data)
-    end
-  end
+  def process_response(response_data)
+    courses_data = response_data.dig('data', 'courses')
+    Rails.logger.info "Extracted courses data: #{courses_data.inspect}"
 
-  def process_course(course_data)
-    course = Course.find_or_initialize_by(course_number: course_data['catalogNumber'])
-    course.assign_attributes(
-      title: course_data['title'],
-      short_description: course_data['shortDescription'],
-      description: course_data['description'],
-      term: course_data['term'],
-      credits: course_data['maxUnits'],
-      academic_org: course_data['academicOrg'],
-      academic_career: course_data['academicCareer'],
-      component: course_data['component'],
-      subject: course_data['subject'],
-      campus: course_data['campus']
-    )
-    if course.save
-      Rails.logger.info "Course #{course.course_number} saved successfully."
-      process_sections(course, course_data['sections'])
-    else
-      Rails.logger.error "Error saving course #{course.course_number}: #{course.errors.full_messages.join(', ')}"
+    unless courses_data
+      Rails.logger.error "Unexpected response structure: 'courses' key not found"
+      raise "Unexpected response structure: 'courses' key not found"
     end
-  end
 
+    if courses_data.empty?
+      Rails.logger.warn "No courses found for these params."
+      Rails.application.env_config['action_dispatch.request.flash_hash'] = ActionDispatch::Flash::FlashHash.new
+      Rails.application.env_config['action_dispatch.request.flash_hash'][:notice] = "No courses found for these params."
+      return
+    end
+
+    courses_data.each do |course_entry|
+      course_data = course_entry['course']
+      next unless course_data
+      next unless valid_course_data?(course_data)
+
+      Rails.logger.info "Processing course data: #{course_data.inspect}"
+
+      course_attributes = {
+        term: course_data['term'],
+        effective_date: course_data['effectiveDate'],
+        effective_status: course_data['effectiveStatus'],
+        course_name: course_data['title'],
+        short_description: course_data['shortDescription'],
+        course_description: course_data['description'],
+        equivalent_id: course_data['equivalentId'],
+        allow_multi_enroll: course_data['allowMultiEnroll'],
+        max_units: course_data['maxUnits'],
+        min_units: course_data['minUnits'],
+        repeat_units_limit: course_data['repeatUnitsLimit'],
+        grading: course_data['grading'],
+        component: course_data['component'],
+        primary_component: course_data['primaryComponent'],
+        offering_number: course_data['offeringNumber'],
+        academic_group: course_data['academicGroup'],
+        subject: course_data['subject'],
+        catalog_number: course_data['catalogNumber'],
+        campus: course_data['campus'],
+        academic_org: course_data['academicOrg'],
+        academic_career: course_data['academicCareer'],
+        cip_code: course_data['cipCode'],
+        campus_code: course_data['campusCode'],
+        catalog_level: course_data['catalogLevel'],
+        subject_desc: course_data['subjectDesc'],
+        course_attributes: course_data['courseAttributes'],
+        course_id: course_data['courseId'],
+        credits: course_data['maxUnits']
+      }
+
+      course = Course.find_or_initialize_by(course_number: course_data['catalogNumber'])
+      course.assign_attributes(course_attributes)
+
+      if course.save
+        Rails.logger.info "Course #{course.course_number} saved successfully."
+      else
+        Rails.logger.error "Error saving course #{course.course_number}: #{course.errors.full_messages.join(', ')}"
+      end
+    end
+    Rails.logger.info "Class information imported successfully."
+  end
   def process_sections(course, sections_data)
     sections_data.each do |section_data|
       section = course.sections.find_or_initialize_by(class_number: section_data['classNumber'])
@@ -136,7 +184,6 @@ class FetchClassInfo
       process_instructors(meeting, meeting_data['instructors'])
     end
   end
-
   def process_instructors(meeting, instructors_data)
     instructors_data.each do |instructor_data|
       instructor = User.find_or_initialize_by(email: instructor_data['email'])
@@ -150,5 +197,9 @@ class FetchClassInfo
 
       meeting.instructors << instructor unless meeting.instructors.include?(instructor)
     end
+  end
+  def valid_course_data?(course_data)
+    required_keys = %w[catalogNumber title description maxUnits]
+    required_keys.all? { |key| course_data[key].present? }
   end
 end
