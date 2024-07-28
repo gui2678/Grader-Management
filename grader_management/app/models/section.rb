@@ -11,4 +11,7 @@ class Section < ApplicationRecord
   validates :component, presence: true
   validates :term, presence: true
   validates :campus, presence: true
+
+  serialize :section_attributes_json, JSON
+
 end

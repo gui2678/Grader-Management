@@ -8,5 +8,8 @@ class Course < ApplicationRecord
     validates :course_name, presence: true
     validates :course_description, presence: true
     validates :credits, presence: true
+
+    serialize :course_attributes_json, JSON
+
   end
   

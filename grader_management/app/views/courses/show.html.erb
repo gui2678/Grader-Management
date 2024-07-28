@@ -1,10 +1,41 @@
 <div class="home-container d-flex justify-content-center align-items-center">
-    <div class="admin-content">
-      <h1 class="display-4"><%= @course.course_name %></h1>
-      <p class="lead"><%= @course.course_description %></p>
-      <p class="mb-4">Credits: <%= @course.credits %></p>
-      <%= link_to 'Back', courses_path, class: 'btn btn-secondary' %>
-      <%= link_to 'Edit', edit_course_path(@course), class: 'btn btn-primary' %>
-    </div>
+  <div class="admin-content">
+    <h1 class="display-4"><%= @course.course_name %></h1>
+    <p class="lead"><%= @course.course_description %></p>
+    <p class="mb-4">Credits: <%= @course.credits %></p>
+    <%= link_to 'Back', courses_path(search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-secondary' %>
+    <%= link_to 'Edit', edit_course_path(@course, search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-primary' %>
+  </div>
 </div>
-  
+
+<div class="sections-container mt-5">
+  <h2>Sections</h2>
+  <% if @course.sections.any? %>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Section Number</th>
+            <th>Instructor</th>
+            <th>Meeting Days</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @course.sections.each do |section| %>
+            <tr>
+              <td><%= section.section_number %></td>
+              <td><%= section.primary_instructor %></td>
+              <td><%= section.meeting_days %></td>
+              <td><%= section.start_time %></td>
+              <td><%= section.end_time %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p>No sections available for this course.</p>
+  <% end %>
+</div>

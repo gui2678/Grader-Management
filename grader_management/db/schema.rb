@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_28_135849) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_28_180217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_28_135849) do
     t.string "subject_desc"
     t.text "course_attributes"
     t.string "course_id"
+    t.text "course_attributes_json"
   end
 
   create_table "enrollments", force: :cascade do |t|
@@ -101,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_28_135849) do
     t.string "days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "meeting_number"
     t.index ["class_number"], name: "index_meetings_on_class_number", unique: true
     t.index ["course_id"], name: "index_meetings_on_course_id"
     t.index ["section_id"], name: "index_meetings_on_section_id"
@@ -158,6 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_28_135849) do
     t.integer "number_of_graders"
     t.string "name"
     t.string "schedule"
+    t.text "section_attributes_json"
     t.index ["class_number"], name: "index_sections_on_class_number", unique: true
     t.index ["course_id"], name: "index_sections_on_course_id"
   end

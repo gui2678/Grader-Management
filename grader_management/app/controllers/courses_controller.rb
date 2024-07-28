@@ -37,7 +37,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
+    @course = Course.includes(:sections).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Sorry! Course not found"
     redirect_to courses_path
@@ -94,7 +94,8 @@ class CoursesController < ApplicationController
     campus = params[:campus]
   
     if term.present? && campus.present?
-      # Clear existing courses
+      # Clear existing courses and sections
+      Section.delete_all
       Course.delete_all
   
       if call_fetch_class_info(term, campus)
@@ -112,7 +113,7 @@ class CoursesController < ApplicationController
   
   private
   def course_params
-    params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :term, :effective_date, :effective_status, :title, :short_description, :equivalent_id, :allow_multi_enroll, :max_units, :min_units, :repeat_units_limit, :grading, :component, :primary_component, :offering_number, :academic_group, :subject, :catalog_number, :campus, :academic_org, :academic_career, :cip_code, :campus_code, :catalog_level, :subject_desc, :course_attributes, :course_id)
+    params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :term, :effective_date, :effective_status, :title, :short_description, :equivalent_id, :allow_multi_enroll, :max_units, :min_units, :repeat_units_limit, :grading, :component, :primary_component, :offering_number, :academic_group, :subject, :catalog_number, :campus, :academic_org, :academic_career, :cip_code, :campus_code, :catalog_level, :subject_desc, :course_attributes_json, :course_id)
   end
   def call_fetch_class_info(term, campus)
     fetcher = FetchClassInfo.new(term: term, campus: campus)
