@@ -14,4 +14,16 @@ class Section < ApplicationRecord
   def primary_instructor
     instructor&.name
   end
+
+  def meeting_days
+    meetings.map(&:meeting_days).join(", ")
+  end
+
+  def start_time
+    meetings.minimum(:start_time)
+  end
+
+  def end_time
+    meetings.maximum(:end_time)
+  end
 end

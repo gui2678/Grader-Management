@@ -1,5 +1,5 @@
 class Meeting < ApplicationRecord
-  belongs_to :course
+  belongs_to :course, optional: true
   belongs_to :section
   belongs_to :instructor, class_name: 'User', foreign_key: 'instructor_id', optional: true
 
@@ -8,5 +8,4 @@ class Meeting < ApplicationRecord
   validates :component, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
-
 end

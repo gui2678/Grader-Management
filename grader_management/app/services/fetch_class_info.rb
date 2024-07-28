@@ -55,7 +55,7 @@ class FetchClassInfo
 
   def process_sections(sections_data, course)
     return unless course
-
+  
     sections_data.each do |section_data|
       section = course.sections.find_or_initialize_by(class_number: section_data['classNumber'])
       section.assign_attributes(
@@ -64,9 +64,9 @@ class FetchClassInfo
         term: section_data['term'],
         campus: section_data['campus'],
         meeting_days: section_data['meetingDays'],
-        start_date: section_data['startDate'],
-        end_date: section_data['endDate'],
-        section_attributes_json: section_data['sectionAttributes'] # renamed from attributes
+        start_time: section_data['startTime'],    
+        end_time: section_data['endTime'],        
+        instructor_id: section_data['instructorId'] 
       )
       if section.save
         Rails.logger.info "Section #{section.section_number} for course #{course.course_number} saved successfully."
@@ -79,8 +79,12 @@ class FetchClassInfo
 
   def process_meetings(section, meetings_data)
     meetings_data.each do |meeting_data|
+      Rails.logger.info "Processing meeting data: #{meeting_data.inspect}"
+  
       meeting = section.meetings.find_or_initialize_by(meeting_number: meeting_data['meetingNumber'])
       meeting.assign_attributes(
+        course_id: section.course_id,
+        section_id: section.id,
         facility_id: meeting_data['facilityId'],
         facility_type: meeting_data['facilityType'],
         facility_description: meeting_data['facilityDescription'],
@@ -102,9 +106,16 @@ class FetchClassInfo
         saturday: meeting_data['saturday'],
         sunday: meeting_data['sunday']
       )
-      unless meeting.save
+  
+      if meeting.save
+        Rails.logger.info "Meeting #{meeting.meeting_number} saved successfully."
+      else
         Rails.logger.error "Error saving meeting #{meeting.meeting_number}: #{meeting.errors.full_messages.join(', ')}"
       end
     end
   end
+  
+  
+  
+  
 end

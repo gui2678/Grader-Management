@@ -24,13 +24,15 @@
         </thead>
         <tbody>
           <% @course.sections.each do |section| %>
-            <tr>
-              <td><%= section.section_number %></td>
-              <td><%= section.primary_instructor %></td>
-              <td><%= section.meeting_days %></td>
-              <td><%= section.start_time %></td>
-              <td><%= section.end_time %></td>
-            </tr>
+            <% section.meetings.each do |meeting| %>
+              <tr>
+                <td><%= section.section_number %></td>
+                <td><%= meeting.instructor&.name %></td>
+                <td><%= meeting.meeting_days %></td>
+                <td><%= meeting.start_time %></td>
+                <td><%= meeting.end_time %></td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>
