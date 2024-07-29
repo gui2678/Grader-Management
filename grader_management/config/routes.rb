@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       get 'reload_courses'
       post 'do_reload_courses'
     end
-    resources :sections, only: [:index, :show] do
+    resources :sections, only: [:index, :show, :edit, :update] do
       resources :graders, only: [:index]
     end
   end

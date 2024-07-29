@@ -20,6 +20,7 @@
                 <h5 class="card-title mb-0">Section <%= section.section_number %></h5>
                 <div>
                   <%= link_to 'View Graders', '#', class: 'btn btn-light' %>
+                  <%= link_to 'Edit Section', edit_course_section_path(@course, section), class: 'btn btn-light' %>
                   <span class="badge badge-light"><%= section.number_of_graders || 0 %> / <%= section.max_graders || 2 %></span>
                 </div>
               </div>

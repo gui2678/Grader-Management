@@ -178,6 +178,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_004903) do
     t.string "schedule"
     t.text "section_attributes_json"
     t.integer "max_graders"
+    t.jsonb "section_attributes"
     t.index ["class_number"], name: "index_sections_on_class_number", unique: true
     t.index ["course_id"], name: "index_sections_on_course_id"
   end

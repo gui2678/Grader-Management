@@ -1,0 +1,51 @@
+<!-- app/views/sections/edit.html.erb -->
+<h1>Edit Section</h1>
+
+<%= form_with(model: [@course, @section], local: true) do |form| %>
+  <% if @section.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@section.errors.count, "error") %> prohibited this section from being saved:</h2>
+      <ul>
+        <% @section.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :section_number %>
+    <%= form.text_field :section_number, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :class_number %>
+    <%= form.text_field :class_number, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :component %>
+    <%= form.text_field :component, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_select :start_date, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_date %>
+    <%= form.date_select :end_date, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_graders %>
+    <%= form.number_field :max_graders, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Update Section', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', course_path(@course), class: 'btn btn-secondary' %>
