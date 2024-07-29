@@ -1,11 +1,11 @@
 <% content_for :title, 'Grader Applications' %>
 <div class="admin-content">
   <h1>Grader Applications</h1>
-
   <div class="d-flex justify-content-end mb-3">
-    <%= link_to 'New Submission', new_grader_application_path, class: 'btn btn-success btn-sm' %>
+    <% if current_user.student?  %>
+      <%= link_to 'New Submission', new_grader_application_path, class: 'btn btn-success btn-sm' %>
+    <% end %>
   </div>
-
   <div class="table-responsive">
     <table class="table" style="color: white;">
       <thead class="thead-dark">
@@ -22,22 +22,20 @@
 
       <tbody>
         <% @grader_applications.each do |application| %>
-          <tr>
+          <tr id="application-<%= application.id %>">
             <td><%= application.display_name %></td>
             <td><%= "#{application.first_name} #{application.middle_name} #{application.last_name}" %></td>
             <td><%= application.email %></td>
             <td><%= application.course.course_name if application.course %></td>
             <td><%= application.section.section_number if application.section %></td>
-            <td><%= application.approved ? 'Yes' : 'No' %></td>
-            <td>
-              <%= link_to 'Show', grader_application_path(application), class: 'btn btn-info btn-sm' %>
+            <td id="approved-<%= application.id %>"><%= application.approved ? 'Yes' : 'No' %></td>
+            <td class="d-flex align-items-center">
+              <%= link_to 'Show', grader_application_path(application), class: 'btn btn-info btn-sm me-2' %>
               <% if current_user.student? && current_user == application.user %>
-                <%= link_to 'Edit', edit_grader_application_path(application), class: 'btn btn-primary btn-sm' %>
-                <%= link_to 'Delete', grader_application_path(application), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+                <%= link_to 'Edit', edit_grader_application_path(application), class: 'btn btn-primary btn-sm me-2' %>
+                <%= link_to 'Delete', grader_application_path(application), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm me-2' %>
               <% elsif current_user.admin? || current_user.instructor? %>
-                <% unless application.approved %>
-                  <%= link_to 'Approve', approve_grader_application_path(application), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
-                <% end %>
+                <%= button_to application.approved ? 'Unapprove' : 'Approve', approve_grader_application_path(application), method: :patch, remote: true, class: 'btn btn-warning btn-sm', id: "approve-button-#{application.id}" %>
               <% end %>
             </td>
           </tr>
