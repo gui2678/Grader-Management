@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
   get 'home/index'
 
+  get 'sections_for_course/:course_id', to: 'sections#sections_for_course', as: 'sections_for_course'
+
   resources :courses do
     collection do
       get 'reload_courses'
@@ -33,10 +35,6 @@ Rails.application.routes.draw do
     resources :sections, only: [:index, :show, :edit, :update] do
       member do
         get 'view_graders'
-      end
-
-      collection do
-        get 'sections_for_course/:course_id', to: 'sections#sections_for_course', as: 'sections_for_course'
       end
     end
   end

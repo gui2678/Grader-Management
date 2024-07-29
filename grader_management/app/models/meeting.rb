@@ -14,4 +14,16 @@ class Meeting < ApplicationRecord
   rescue JSON::ParserError
     []
   end
+
+  def meeting_days
+    days = []
+    days << 'Monday' if self.monday
+    days << 'Tuesday' if self.tuesday
+    days << 'Wednesday' if self.wednesday
+    days << 'Thursday' if self.thursday
+    days << 'Friday' if self.friday
+    days << 'Saturday' if self.saturday
+    days << 'Sunday' if self.sunday
+    days.join(', ')
+  end
 end
