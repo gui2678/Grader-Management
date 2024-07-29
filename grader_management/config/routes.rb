@@ -39,6 +39,15 @@ Rails.application.routes.draw do
     end
   end
 
+  # COurse Section Management Routes
+  resources :courses do
+    resources :sections do
+      collection do
+        get 'manage'
+      end
+    end
+  end
+
   # root path
   root to: "home#index"
 
