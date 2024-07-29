@@ -1,0 +1,34 @@
+<h1>Manage Course Sections</h1>
+
+<%= form_with model: @section, local: true, html: { class: 'form-horizontal' } do |form| %>
+  <div class="form-group row mb-3">
+    <%= form.label :course_id, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.number_field :course_id, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group row mb-3">
+    <%= form.label :section_number, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :section_number, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group row mb-3">
+    <%= form.label :instructor, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :instructor, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group row mb-3">
+    <%= form.label :schedule, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :schedule, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10 offset-sm-2">
+      <%= form.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+<%= link_to 'Back to Courses', courses_path, class: 'btn btn-secondary' %>

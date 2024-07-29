@@ -1,0 +1,25 @@
+<h1>Recommendations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recommender</th>
+      <th>Recommended</th>
+      <th>Course</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @recommendations.each do |recommendation| %>
+      <tr>
+        <td><%= recommendation.recommender.first_name %> <%= recommendation.recommender.last_name %></td>
+        <td><%= recommendation.recommended.first_name %> <%= recommendation.recommended.last_name %></td>
+        <td><%= recommendation.course.course_name %></td>
+        <td><%= recommendation.message %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'New Recommendation', new_recommendation_path %>

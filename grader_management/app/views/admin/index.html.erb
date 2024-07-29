@@ -1,38 +1,36 @@
-<head>
-  <% content_for :title, 'User Management' %>
-</head>
-
-<h1>Admin Dashboard</h1>
-<h2>Users</h2>
-
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Role</th>
-        <th>Approved</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @users.each do |user| %>
+<% content_for :title, 'User Management' %>
+<div class="admin-content">
+  <h1>User Management</h1>
+  <div class="table-responsive">
+    <table class="table" style="color: white;">
+      <thead class="thead-dark">
         <tr>
-          <td><%= user.email %></td>
-          <td><%= user.first_name %></td>
-          <td><%= user.last_name %></td>
-          <td><%= user.role %></td>
-          <td class="text-center ml-3">
-         <%= form_with(url: approve_requests_path, method: :get, local: true, class: 'd-flex align-items-center') do |form| %>
-          <%= form.hidden_field :user_id, value: user.id %>
-          <%= form.check_box :approved, checked: user.approved?, class: 'form-check-input' %>
-          <%= form.submit 'Save', class: 'btn btn-primary btn-sm ml-2' %>
-        <% end %>
-          </td>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Role</th>
+          <th>Approved</th>
+          <th>Actions</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr id="user-<%= user.id %>">
+            <td><%= user.email %></td>
+            <td><%= user.first_name %></td>
+            <td><%= user.last_name %></td>
+            <td><%= user.role %></td>
+            <td class="text-center" id="approved-<%= user.id %>"><%= user.approved? ? 'Yes' : 'No' %></td>
+            <td class="d-flex justify-content-center align-items-center">
+              <%= form_with(url: approve_requests_path, method: :get, local: true) do |form| %>
+                <%= form.hidden_field :user_id, value: user.id %>
+                <%= form.check_box :approved, checked: user.approved? %>
+                <%= form.submit 'Save', class: 'btn btn-primary btn-sm' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

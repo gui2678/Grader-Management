@@ -59,10 +59,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update_database_with_new_data(new_data)
     new_data.each do |data|
-      course = Course.find_by(course_number: data[:course_number])
+      course = Course.find_by(course_number: data[:course])
       if course
         section = Section.find_or_initialize_by(course: course, section_number: data[:section])
         section.update(grader_needed: data[:grader_needed])
+      else
+        Rails.logger.error "Sorry! Course is not found: #{data[:course]}"
       end
     end
   end

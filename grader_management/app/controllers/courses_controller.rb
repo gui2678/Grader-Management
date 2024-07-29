@@ -2,6 +2,7 @@ class CoursesController < ApplicationController
   include Pagy::Backend
 
   before_action :authenticate_user!
+  before_action :verify_admin, only: [:do_reload_courses, :new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def fetch_class_info
     term = params[:term]
@@ -19,10 +20,17 @@ class CoursesController < ApplicationController
   end
 
   def index
-    @courses = Course.all
-
     if params[:search].present?
-      @courses = @courses.where('course_name ILIKE ? OR course_description ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
+      search_term = params[:search].downcase
+      @courses = Course.search(search_term)
+      if @courses.empty?
+        flash.now[:notice] = "There are no courses found for these params."
+        @pagy, @courses = pagy(Course.none, items: 10)
+      else
+        @pagy, @courses = pagy(@courses, items: 10)
+      end
+    else
+      @pagy, @courses = pagy(Course.all, items: 10)
     end
 
     if params[:sort_by] == 'name'
@@ -58,6 +66,10 @@ class CoursesController < ApplicationController
       flash.now[:alert] = @course.errors.full_messages.to_sentence
       render 'new'
     end
+  rescue ActionController::ParameterMissing => e
+    @course = Course.new
+    flash.now[:alert] = "Please fill in all required fields."
+    render 'new'
   end
 
   def update

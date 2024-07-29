@@ -8,34 +8,44 @@
         <%= pluralize(@course.errors.count, "error") %> prohibited this course from being saved:
       </h2>
       <ul>
-        <% @course.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+        <% @course.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :course_number %>
-    <%= form.text_field :course_number, class: 'form-control' %>
+  <div class="form-group row">
+    <%= form.label :course_number, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :course_number, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :course_name %>
-    <%= form.text_field :course_name, class: 'form-control' %>
+  <div class="form-group row">
+    <%= form.label :course_name, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :course_name, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :course_description %>
-    <%= form.text_area :course_description, class: 'form-control' %>
+  <div class="form-group row">
+    <%= form.label :course_description, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_area :course_description, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :credits %>
-    <%= form.number_field :credits, class: 'form-control' %>
+  <div class="form-group row">
+    <%= form.label :credits, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.number_field :credits, class: 'form-control' %>
+    </div>
   </div>
 
-  <p>
-    <%= form.submit 'Save', class: 'btn btn-primary' %>
-  </p>
+  <div class="form-group row">
+    <div class="col-sm-10 offset-sm-2">
+      <%= form.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  </div>
 <% end %>
