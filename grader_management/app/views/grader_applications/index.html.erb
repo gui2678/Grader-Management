@@ -1,11 +1,11 @@
 <% content_for :title, 'Grader Applications' %>
 <div class="admin-content">
   <h1>Grader Applications</h1>
-
   <div class="d-flex justify-content-end mb-3">
+    <% if current_user.student? && current_user == application.user %>
     <%= link_to 'New Submission', new_grader_application_path, class: 'btn btn-success btn-sm' %>
+    <% end %>
   </div>
-
   <div class="table-responsive">
     <table class="table" style="color: white;">
       <thead class="thead-dark">
@@ -35,9 +35,9 @@
                 <%= link_to 'Edit', edit_grader_application_path(application), class: 'btn btn-primary btn-sm' %>
                 <%= link_to 'Delete', grader_application_path(application), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
               <% elsif current_user.admin? || current_user.instructor? %>
-                <% unless application.approved %>
-                  <%= link_to 'Approve', approve_grader_application_path(application), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
-                <% end %>
+              <% unless application.approved %>
+              <%= link_to 'Approve', approve_grader_application_path(application), method: :patch, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
+            <% end %>
               <% end %>
             </td>
           </tr>

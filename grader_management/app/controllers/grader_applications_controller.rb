@@ -53,8 +53,9 @@ class GraderApplicationsController < ApplicationController
 
   def approve
     @grader_application = GraderApplication.find(params[:id])
-    @grader_application.update(approved: true)
-    redirect_to grader_applications_url, notice: 'Grader Application was successfully approved.'
+    @grader_application.update(approved: !@grader_application.approved)
+    flash[:notice] = @grader_application.approved ? "Application approved successfully." : "Application unapproved successfully."
+    redirect_to grader_applications_path
   end
 
   private
