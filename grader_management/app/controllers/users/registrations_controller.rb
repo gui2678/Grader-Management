@@ -4,11 +4,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
 
   def create
-    # super do |resource|
-    #   if resource.persisted?
-    #     set_flash_message! :notice, :signed_up #Set the flash message
-    #   end
-    # end
     build_resource(sign_up_params)
     resource.save
     yield resource if block_given?
@@ -57,15 +52,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def fetch_data_from_external_source
     [
-      { course: 'CSE 2221', section: '001', grader_needed: true },
-      { course: 'CSE 2231', section: '002', grader_needed: false }
+      { course_number: 'CSE 2221', section: '001', grader_needed: true },
+      { course_number: 'CSE 2231', section: '002', grader_needed: false }
     ]
   end
 
   def update_database_with_new_data(new_data)
     new_data.each do |data|
-      course_section = CourseSection.find_or_initialize_by(course: data[:course], section: data[:section])
-      course_section.update(grader_needed: data[:grader_needed])
+      course = Course.find_by(course_number: data[:course_number])
+      if course
+        section = Section.find_or_initialize_by(course: course, section_number: data[:section])
+        section.update(grader_needed: data[:grader_needed])
+      end
     end
   end
 
