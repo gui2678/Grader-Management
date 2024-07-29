@@ -54,8 +54,12 @@ class GraderApplicationsController < ApplicationController
   def approve
     @grader_application = GraderApplication.find(params[:id])
     @grader_application.update(approved: !@grader_application.approved)
-    flash[:notice] = @grader_application.approved ? "Application approved successfully." : "Application unapproved successfully."
-    redirect_to grader_applications_path
+    @status_message = @grader_application.approved ? "Application approved successfully." : "Application unapproved successfully."
+
+    respond_to do |format|
+      format.html { redirect_to grader_applications_path, notice: @status_message }
+      format.js   # This will render `approve.js.erb`
+    end
   end
 
   private
