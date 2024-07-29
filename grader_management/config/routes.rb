@@ -5,18 +5,22 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
   }
 
-  # user sign-out
+  # User sign-out
   devise_scope :user do
     get 'users/sign_out', to: 'devise/sessions#destroy'
   end
 
-  # admin routes
-  get 'admin/index'
-  put 'approve_requests', to: 'admin#approve_requests' # Ensure this is a PUT route
-  get 'admin/database-test', to: 'admin#test'
-  post 'admin/fetch_class_info', to: 'admin#fetch_class_info', as: 'admin_fetch_class_info'
+  # Admin routes
+  authenticated :user, ->(u) { u.admin? && u.approved? } do
+    namespace :admin do
+      get 'index'
+      get 'approve_requests'
+      get 'database-test', to: 'admin#test'
+      post 'fetch_class_info', to: 'admin#fetch_class_info'
+    end
+  end
 
-  # home routes
+  # Home routes
   get 'home/index'
 
   # course routes
@@ -28,17 +32,25 @@ Rails.application.routes.draw do
     resources :sections, only: [:index, :show]
   end
 
-  #Grader Applications routes
-
+  # Grader Applications routes
   resources :grader_applications do
     member do
       patch 'approve'
     end
   end
 
+  # COurse Section Management Routes
+  resources :courses do
+    resources :sections do
+      collection do
+        get 'manage'
+      end
+    end
+  end
+
   # root path
   root to: "home#index"
 
-  # catch-all route for errors
+  # Catch-all route for errors
   match '*unmatched', to: 'errors#not_found', via: :all
 end

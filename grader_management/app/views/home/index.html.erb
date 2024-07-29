@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CourseInsight</title>
+  <title><%= yield(:title) %> | CourseInsight</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag 'home', media: 'all' %>
+
+  <style>
+    .admin-content {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <div class="home-container">
+  <div class="container my-5">
     <div class="admin-content">
       <h1>Welcome to CourseInsight</h1>
       <p>Your one-stop solution for managing course information in the Computer Science and Engineering department at Ohio State University. Whether you're a student, instructor, or admin, CourseInsight provides an efficient and hassle-free way to view and manage course details.</p>

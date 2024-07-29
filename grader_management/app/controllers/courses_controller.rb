@@ -1,15 +1,20 @@
 class CoursesController < ApplicationController
   include Pagy::Backend
   before_action :authenticate_user!
-  before_action :verify_admin, only: [:new, :create, :edit, :update, :destroy, :do_reload_courses]
+  before_action :verify_admin, only: [:do_reload_courses, :new, :create, :edit, :update, :destroy, :do_reload_courses]
 
   def index
-    @pagy, @courses = pagy(Course.all, items: 10)
-    @flash_notice = flash[:notice] if flash[:notice]
-
     if params[:search].present?
       search_term = params[:search].downcase
-      @courses = @courses.search(search_term)
+      @courses = Course.search(search_term)
+      if @courses.empty?
+        flash.now[:notice] = "There are no courses found for these params."
+        @pagy, @courses = pagy(Course.none, items: 10)
+      else
+        @pagy, @courses = pagy(@courses, items: 10)
+      end
+    else
+      @pagy, @courses = pagy(Course.all, items: 10)
     end
 
     if params[:sort_by].present?
@@ -25,32 +30,38 @@ class CoursesController < ApplicationController
   end
 
   def new
-      @course = Course.new
+    @course = Course.new
   end
 
   def edit
-      @course = Course.find(params[:id])
+    @course = Course.find(params[:id])
   end
 
   def create
-      @course = Course.new(course_params)
+    @course = Course.new(course_params)
 
-      if @course.save
-        redirect_to @course
-      else
-        render 'new'
-      end
+    if @course.save
+      redirect_to @course, notice: "Course successfully created."
+    else
+      flash.now[:alert] = @course.errors.full_messages.to_sentence
+      render 'new'
+    end
+  rescue ActionController::ParameterMissing => e
+    @course = Course.new
+    flash.now[:alert] = "Please fill in all required fields."
+    render 'new'
   end
 
   def update
-      @course = Course.find(params[:id])
+    @course = Course.find(params[:id])
 
-      if @course.update(course_params)
-        flash[:notice] = "Success! See below for your updated course!"
-        redirect_to courses_path
-      else
-        render 'edit'
-      end
+    if @course.update(course_params)
+      flash[:notice] = "Success! See below for your updated course!"
+      redirect_to courses_path
+    else
+      flash.now[:alert] = @course.errors.full_messages.to_sentence
+      render 'edit'
+    end
   end
 
   def destroy
@@ -79,10 +90,10 @@ class CoursesController < ApplicationController
     redirect_to courses_path
   end
 
-
   private
-def course_params
-  params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
+
+  def course_params
+    params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
   end
 
   def call_fetch_class_info(term, campus)

@@ -9,7 +9,7 @@
 #   end
 
 # Example users
-admin = User.find_or_create_by!(email: 'admin@osu.edu') do |user|
+admin = User.find_or_create_by!(email: 'admin.1@osu.edu') do |user|
   user.password = 'password'
   user.password_confirmation = 'password'
   user.first_name = 'Admin'
@@ -18,7 +18,7 @@ admin = User.find_or_create_by!(email: 'admin@osu.edu') do |user|
   user.approved = true
 end
 
-instructor = User.find_or_create_by!(email: 'instructor@osu.edu') do |user|
+instructor = User.find_or_create_by!(email: 'instructor.1@osu.edu') do |user|
   user.password = 'password'
   user.password_confirmation = 'password'
   user.first_name = 'Instructor'
@@ -27,7 +27,7 @@ instructor = User.find_or_create_by!(email: 'instructor@osu.edu') do |user|
   user.approved = true
 end
 
-student = User.find_or_create_by!(email: 'student@osu.edu') do |user|
+student = User.find_or_create_by!(email: 'student.1@osu.edu') do |user|
   user.password = 'password'
   user.password_confirmation = 'password'
   user.first_name = 'Student'
@@ -57,8 +57,8 @@ Section.find_or_create_by!(
   course: course1,
   class_number: '001',
   component: 'Lecture',
-  start_time: '2000-01-01 10:00:00',
-  end_time: '2000-01-01 10:50:00',
+  start_date: '2000-01-01 10:00:00',
+  end_date: '2000-01-01 10:50:00',
   days: 'MWF',
   instructor: instructor,
   term: 'Fall 2023',
@@ -72,8 +72,8 @@ Section.find_or_create_by!(
   course: course2,
   class_number: '002',
   component: 'Lecture',
-  start_time: '2000-01-01 11:00:00',
-  end_time: '2000-01-01 12:15:00',
+  start_date: '2000-01-01 11:00:00',
+  end_date: '2000-01-01 12:15:00',
   days: 'TTh',
   instructor: instructor,
   term: 'Fall 2023',
