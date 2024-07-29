@@ -8,4 +8,10 @@ class Meeting < ApplicationRecord
   validates :component, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
+
+  def instructors
+    JSON.parse(instructors_json || '[]')
+  rescue JSON::ParserError
+    []
+  end
 end

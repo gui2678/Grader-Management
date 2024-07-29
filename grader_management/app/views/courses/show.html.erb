@@ -1,43 +1,60 @@
-<div class="course-details-container container my-5">
-  <div class="home-container d-flex justify-content-center align-items-center mb-5">
-    <div class="admin-content text-center">
+<div class="course-details-container">
+  <div class="home-container d-flex justify-content-center align-items-center">
+    <div class="admin-content">
       <h1 class="display-4"><%= @course.course_name %></h1>
       <p class="lead"><%= @course.course_description %></p>
       <p class="mb-4">Credits: <%= @course.credits %></p>
-      <%= link_to 'Back', courses_path(search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-secondary me-2' %>
+      <%= link_to 'Back', courses_path(search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-secondary' %>
       <%= link_to 'Edit', edit_course_path(@course, search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-primary' %>
     </div>
   </div>
 
   <div class="sections-container mt-5">
-    <h2 class="text-center mb-4">Sections</h2>
+    <h2>Sections</h2>
     <% if @course.sections.any? %>
-      <% @course.sections.each do |section| %>
-        <div class="card shadow-sm mb-4">
-          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">Section <%= section.section_number %></h5>
-            <%= link_to 'View Graders', '#', class: 'btn btn-light' %>
+      <div class="row">
+        <% @course.sections.each do |section| %>
+          <div class="col-md-6 mb-4">
+            <div class="card">
+              <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Section <%= section.section_number %></h5>
+                <div>
+                  <%= link_to 'View Graders', '#', class: 'btn btn-light' %>
+                  <span class="badge badge-light"><%= section.number_of_graders || 0 %> / <%= section.max_graders || 2 %></span>
+                </div>
+              </div>
+              <div class="card-body">
+                <p><strong>Instructor:</strong> 
+                  <% instructors = section.meetings.flat_map do |meeting| 
+                    begin
+                      parsed_instructors = meeting.instructors_json.gsub("=>", ":")
+                      JSON.parse(parsed_instructors || '[]').map { |i| i['displayName'] }
+                    rescue JSON::ParserError
+                      []
+                    end
+                  end.uniq %>
+                  <%= instructors.join(", ") %>
+                </p>
+                <p><strong>Meeting Days:</strong>
+                  <% section.meetings.each do |meeting| %>
+                    <%= "M" if meeting.monday %>
+                    <%= "T" if meeting.tuesday %>
+                    <%= "W" if meeting.wednesday %>
+                    <%= "R" if meeting.thursday %>
+                    <%= "F" if meeting.friday %>
+                    <%= "S" if meeting.saturday %>
+                    <%= "U" if meeting.sunday %>
+                  <% end %>
+                </p>
+                <p><strong>Start Time:</strong> <%= section.meetings.first.start_time.strftime("%I:%M %p") if section.meetings.first.start_time %></p>
+                <p><strong>End Time:</strong> <%= section.meetings.first.end_time.strftime("%I:%M %p") if section.meetings.first.end_time %></p>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <p><strong>Instructor:</strong> <%= section.meetings.map { |meeting| meeting.instructors_json&.map { |i| i['displayName'] }&.join(", ") }.uniq.join(", ") %></p>
-            <p><strong>Meeting Days:</strong>
-              <% section.meetings.each do |meeting| %>
-                <%= "M" if meeting.monday %>
-                <%= "T" if meeting.tuesday %>
-                <%= "W" if meeting.wednesday %>
-                <%= "R" if meeting.thursday %>
-                <%= "F" if meeting.friday %>
-                <%= "S" if meeting.saturday %>
-                <%= "U" if meeting.sunday %>
-              <% end %>
-            </p>
-            <p><strong>Start Time:</strong> <%= section.meetings.map { |meeting| meeting.start_time&.strftime("%I:%M %p") }.uniq.join(", ") %></p>
-            <p><strong>End Time:</strong> <%= section.meetings.map { |meeting| meeting.end_time&.strftime("%I:%M %p") }.uniq.join(", ") %></p>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     <% else %>
-      <p class="text-center mt-4">No sections available for this course.</p>
+      <p>No sections available for this course.</p>
     <% end %>
   </div>
 </div>

@@ -1,4 +1,3 @@
-# app/controllers/admin/courses_controller.rb
 class CoursesController < ApplicationController
   include Pagy::Backend
 
@@ -8,7 +7,6 @@ class CoursesController < ApplicationController
     term = params[:term]
     campus = params[:campus]
     
-    # Initialize and call the FetchClassInfo service
     fetcher = FetchClassInfo.new(term: term, campus: campus)
     
     if fetcher.call
@@ -37,7 +35,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.includes(:sections).find(params[:id])
+    @course = Course.includes(sections: :meetings).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Sorry! Course not found"
     redirect_to courses_path
@@ -48,7 +46,7 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @course = Course.find(params[:id])
+    @course = Course.includes(sections: :meetings).find(params[:id])
   end
 
   def create
@@ -64,10 +62,10 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find(params[:id])
-  
+    
     if @course.update(course_params)
       flash[:notice] = "Success! See below for your updated course!"
-      redirect_to courses_path(search: params[:search], sort_by: params[:sort_by])
+      redirect_to course_path(@course, search: params[:search], sort_by: params[:sort_by])
     else
       flash.now[:alert] = @course.errors.full_messages.to_sentence
       render 'edit'
@@ -83,10 +81,8 @@ class CoursesController < ApplicationController
       format.js
     end
   end
-  
 
   def reload_courses
-    
   end
 
   def do_reload_courses
@@ -94,7 +90,7 @@ class CoursesController < ApplicationController
     campus = params[:campus]
   
     if term.present? && campus.present?
-      # Clear existing courses and sections
+      Meeting.delete_all
       Section.delete_all
       Course.delete_all
   
@@ -109,12 +105,20 @@ class CoursesController < ApplicationController
     redirect_to courses_path
   end
   
-
-  
   private
+
   def course_params
-    params.require(:course).permit(:course_number, :course_name, :course_description, :credits, :term, :effective_date, :effective_status, :title, :short_description, :equivalent_id, :allow_multi_enroll, :max_units, :min_units, :repeat_units_limit, :grading, :component, :primary_component, :offering_number, :academic_group, :subject, :catalog_number, :campus, :academic_org, :academic_career, :cip_code, :campus_code, :catalog_level, :subject_desc, :course_attributes_json, :course_id)
+    params.require(:course).permit(
+      :course_number, :course_name, :course_description, :credits, 
+      :term, :effective_date, :effective_status, :title, :short_description, 
+      :equivalent_id, :allow_multi_enroll, :max_units, :min_units, :repeat_units_limit, 
+      :grading, :component, :primary_component, :offering_number, :academic_group, 
+      :subject, :catalog_number, :campus, :academic_org, :academic_career, :cip_code, 
+      :campus_code, :catalog_level, :subject_desc, :course_attributes_json, 
+      sections_attributes: [:id, :max_graders, :number_of_graders]
+    )
   end
+
   def call_fetch_class_info(term, campus)
     fetcher = FetchClassInfo.new(term: term, campus: campus)
 
@@ -124,10 +128,6 @@ class CoursesController < ApplicationController
       Rails.logger.error "FetchClassInfo service failed for term: #{term}, campus: #{campus}"
       false
     end
-  end
-
-  def course_params
-    params.require(:course).permit(:course_number, :course_name, :course_description, :credits)
   end
 
   def verify_admin
