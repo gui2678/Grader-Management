@@ -16,7 +16,7 @@ class CoursesController < ApplicationController
     else
       @pagy, @courses = pagy(Course.all, items: 10)
     end
-  
+
     if params[:sort_by].present?
       @courses = @courses.sort_by_column(params[:sort_by])
     end
@@ -46,6 +46,10 @@ class CoursesController < ApplicationController
       flash.now[:alert] = @course.errors.full_messages.to_sentence
       render 'new'
     end
+  rescue ActionController::ParameterMissing => e
+    @course = Course.new
+    flash.now[:alert] = "Please fill in all required fields."
+    render 'new'
   end
 
   def update
