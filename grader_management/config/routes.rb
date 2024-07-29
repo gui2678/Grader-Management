@@ -20,6 +20,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'admin/approve_requests'
+  get 'approve_requests', to: 'admin#approve_requests'
+
   # Home routes
   get 'home/index'
 
