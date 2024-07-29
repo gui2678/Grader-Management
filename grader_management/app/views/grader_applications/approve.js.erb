@@ -5,3 +5,5 @@
   $("#approved-<%= @grader_application.id %>").text("No");
   $("a[href='#{approve_grader_application_path(@grader_application)}']").text("Approve");
 <% end %>
+
+$("#section-<%= @grader_application.section_id %>-grader-count").text('<%= @grader_application.section.grader_applications.where(approved: true).count %> / <%= @grader_application.section.max_graders %>');

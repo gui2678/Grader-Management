@@ -4,7 +4,7 @@ class Section < ApplicationRecord
   has_many :meetings, dependent: :destroy
   has_many :enrollments, dependent: :destroy
   has_many :students, through: :enrollments, source: :user
-
+  has_many :grader_applications
   validates :section_number, presence: true
   validates :class_number, presence: true
   validates :component, presence: true

@@ -1,8 +1,7 @@
-# app/controllers/sections_controller.rb
 class SectionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_course, only: [:index, :show, :edit, :update]
-  before_action :set_section, only: %i[ show edit update destroy ]
+  before_action :set_course, only: [:index, :show, :edit, :update, :view_graders, :sections_for_course]
+  before_action :set_section, only: [:show, :edit, :update, :destroy, :view_graders]
 
   def index
     @sections = @course.sections
@@ -22,6 +21,17 @@ class SectionsController < ApplicationController
     end
   end
 
+  def view_graders
+    @graders = @section.grader_applications.where(approved: true)
+  end
+
+  def sections_for_course
+    @sections = Section.where(course_id: params[:course_id])
+    respond_to do |format|
+      format.json { render json: @sections }
+    end
+  end
+
   private
 
   def set_course
@@ -29,38 +39,14 @@ class SectionsController < ApplicationController
   end
 
   def set_section
-    @section = @course.sections.find(params[:id])
+    @section = @course.sections.find_by(id: params[:id])
+    unless @section
+      flash[:alert] = "Section not found."
+      redirect_to courses_path
+    end
   end
 
   def section_params
     params.require(:section).permit(:section_number, :class_number, :component, :start_date, :end_date, :max_graders)
-  end
-
-  def manage
-    @section = Section.new
-  end
-
-  def create
-    @section = Section.new(section_params)
-
-    respond_to do |format|
-      if @section.save
-        format.html { redirect_to @section, notice: 'Section was successfully created.' }
-        format.json { render :show, status: :created, location: @section }
-      else
-        format.html { render :manage }
-        format.json { render json: @section.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  private
-
-  def set_section
-    @section = Section.find(params[:id])
-  end
-
-  def section_params
-    params.require(:section).permit(:course_id, :section_number, :instructor, :schedule)
   end
 end
