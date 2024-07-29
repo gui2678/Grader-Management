@@ -42,8 +42,6 @@
                     <%= "W" if meeting.wednesday %>
                     <%= "R" if meeting.thursday %>
                     <%= "F" if meeting.friday %>
-                    <%= "S" if meeting.saturday %>
-                    <%= "U" if meeting.sunday %>
                   <% end %>
                 </p>
                 <p><strong>Start Time:</strong> <%= section.meetings.first.start_time.strftime("%I:%M %p") if section.meetings.first.start_time %></p>
