@@ -306,7 +306,8 @@ Here is an overview of the project directory structure:
 ### User Registration and Login ![Login Page](LoginPage.png)
 
 - Users can register for an account and log in.
-- Admins need to approve new admins/instructors before they can access the system. (note: check user logs if experiencing errors with approval: admin may not be able to be approved if the user requirements aren't met!)
+- Admins need to approve new admins/instructors before they can access the system. (note: check user logs if experiencing errors with approval:
+ admin may not be able to be approved if the user requirements aren't met!)
 - Users that register with student role get approved automatically.
  
 ## Testing
