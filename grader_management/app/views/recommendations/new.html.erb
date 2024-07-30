@@ -1,89 +1,100 @@
-<h1>New Recommendation</h1>
+<!DOCTYPE html>
+<html>
+<body>
 
-<%= form_with(model: @recommendation, local: true) do |form| %>
-  <% if @recommendation.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@recommendation.errors.count, "error") %> prohibited this recommendation from being saved:</h2>
-      <ul>
-        <% @recommendation.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <div id="flash-messages">
+    <% if flash.any? %>
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %> alert-dismissible fade show" role="alert">
+          <%= value %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="container my-5">
+    <div class="admin-content">
+      <h1>New Recommendation</h1>
+
+      <%= form_with(model: @recommendation, local: true) do |form| %>
+        <div class="mb-3">
+          <%= form.label :username, class: "form-label text-left" %>
+          <%= form.text_field :username, id: 'username-input', class: "form-control" %>
+          <%= button_tag "Fetch User Data", id: 'fetch-button', type: 'button', class: "btn btn-secondary mt-2" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :display_name, class: "form-label text-left" %>
+          <%= form.text_field :display_name, id: 'display_name', class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :first_name, class: "form-label text-left" %>
+          <%= form.text_field :first_name, id: 'first_name', class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :last_name, class: "form-label text-left" %>
+          <%= form.text_field :last_name, id: 'last_name', class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :email, class: "form-label text-left" %>
+          <%= form.email_field :email, id: 'email', class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :course_id, class: "form-label text-left" %>
+          <%= form.collection_select :course_id, @courses, :second, :first, { include_blank: true }, { class: "form-select" } %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :section_number, class: "form-label text-left" %>
+          <%= form.text_field :section_number, id: 'section-number-input', class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :message, class: "form-label text-left" %>
+          <%= form.text_area :message, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.submit 'Submit', class: "btn btn-primary" %>
+          <%= link_to 'View Recommendations', recommendations_path, class: "btn btn-secondary ms-2" %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :username, "Enter Username" %>
-    <%= form.text_field :username, id: 'username-input' %>
-    <%= button_tag "Fetch User Data", id: 'fetch-button', type: 'button' %>
   </div>
 
-  <div class="field">
-    <%= form.label :display_name, "Display Name" %>
-    <%= form.text_field :display_name, id: 'display_name' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :first_name, "First Name" %>
-    <%= form.text_field :first_name, id: 'first_name' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :last_name, "Last Name" %>
-    <%= form.text_field :last_name, id: 'last_name' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email, "Email" %>
-    <%= form.text_field :email, id: 'email' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :course_id, "Course" %>
-    <%= form.collection_select :course_id, @courses, :second, :first, prompt: "Select a Course", id: 'course-select' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :section_number, "Section Number" %>
-    <%= form.text_field :section_number, id: 'section-number-input' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :message, "Recommendation Message" %>
-    <%= form.text_area :message %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-<%= link_to 'View Recommendations', recommendations_path %>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const fetchButton = document.getElementById('fetch-button');
-    const usernameInput = document.getElementById('username-input');
-
-    function fetchUserData(username) {
-      fetch(`https://directory.osu.edu/fpjson.php?name_n=${username}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.length > 0) {
-            const user = data[0];
-            document.getElementById('display_name').value = user.name || '';
-            document.getElementById('first_name').value = user.first_name || '';
-            document.getElementById('last_name').value = user.last_name || '';
-            document.getElementById('email').value = user.email || '';
-          }
-        });
+  <style>
+    .form-label {
+      text-align: left;
+      display: block;
     }
+  </style>
 
-    fetchButton.addEventListener('click', function() {
-      const username = usernameInput.value;
-      if (username) {
-        fetchUserData(username);
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const fetchButton = document.getElementById('fetch-button');
+      const usernameInput = document.getElementById('username-input');
+
+      function fetchUserData(username) {
+        fetch(`https://directory.osu.edu/fpjson.php?name_n=${username}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data && data.length > 0) {
+              const user = data[0];
+              document.getElementById('display_name').value = user.name || '';
+              document.getElementById('first_name').value = user.first_name || '';
+              document.getElementById('last_name').value = user.last_name || '';
+              document.getElementById('email').value = user.email || '';
+            }
+          });
       }
+
+      fetchButton.addEventListener('click', function() {
+        const username = usernameInput.value;
+        if (username) {
+          fetchUserData(username);
+        }
+      });
     });
-  });
-</script>
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
