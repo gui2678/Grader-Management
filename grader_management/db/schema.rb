@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_30_173928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,11 +23,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
     t.index ["user_id"], name: "index_approvals_on_user_id"
   end
 
+  create_table "availabilities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "monday"
+    t.string "tuesday"
+    t.string "wednesday"
+    t.string "thursday"
+    t.string "friday"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_availabilities_on_user_id"
+  end
+
   create_table "courses", force: :cascade do |t|
-    t.string "course_number"
-    t.string "course_name"
-    t.text "course_description"
-    t.integer "credits"
+    t.string "course_number", null: false
+    t.string "course_name", null: false
+    t.text "course_description", null: false
+    t.integer "credits", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "term"
@@ -58,13 +70,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
     t.text "course_attributes"
     t.string "course_id"
     t.text "course_attributes_json"
+    t.index ["course_number"], name: "index_courses_on_course_number", unique: true
   end
 
   create_table "enrollments", force: :cascade do |t|
+    t.bigint "section_id", null: false
     t.integer "student_id"
-    t.integer "section_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["section_id"], name: "index_enrollments_on_section_id"
   end
 
   create_table "grader_applications", force: :cascade do |t|
@@ -90,27 +104,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
   end
 
   create_table "meetings", force: :cascade do |t|
-    t.bigint "course_id", null: false
     t.bigint "section_id", null: false
-    t.string "class_number", null: false
-    t.string "section_number", null: false
-    t.string "component", null: false
-    t.string "instruction_mode"
-    t.date "start_date"
-    t.date "end_date"
-    t.string "enrollment_status"
-    t.string "status"
-    t.string "section_type"
-    t.integer "associated_class"
-    t.boolean "auto_enroll_waitlist"
-    t.string "auto_enroll_section1"
-    t.string "auto_enroll_section2"
-    t.boolean "consent"
-    t.integer "waitlist_capacity"
-    t.integer "minimum_enrollment"
-    t.integer "enrollment_total"
-    t.integer "waitlist_total"
-    t.integer "facility_id"
+    t.bigint "instructor_id"
+    t.integer "meeting_number"
+    t.string "facility_id"
     t.string "facility_type"
     t.string "facility_description"
     t.string "facility_description_short"
@@ -119,81 +116,77 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
     t.string "room"
     t.string "building_description"
     t.string "building_description_short"
-    t.time "start_time"
-    t.time "end_time"
-    t.boolean "monday", default: false
-    t.boolean "tuesday", default: false
-    t.boolean "wednesday", default: false
-    t.boolean "thursday", default: false
-    t.boolean "friday", default: false
-    t.boolean "saturday", default: false
-    t.boolean "sunday", default: false
-    t.string "location"
-    t.string "primary_instructor_section"
-    t.string "combined_section"
-    t.string "holiday_schedule"
-    t.string "session_code"
-    t.string "session_description"
-    t.string "term"
-    t.string "campus"
-    t.jsonb "meeting_attributes_json"
+    t.string "start_time"
+    t.string "end_time"
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "monday"
+    t.boolean "tuesday"
+    t.boolean "wednesday"
+    t.boolean "thursday"
+    t.boolean "friday"
+    t.boolean "saturday"
+    t.boolean "sunday"
+    t.string "standing_meeting_pattern"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "meeting_number"
     t.text "instructors_json"
-    t.index ["class_number"], name: "index_meetings_on_class_number", unique: true
-    t.index ["course_id"], name: "index_meetings_on_course_id"
+    t.index ["instructor_id"], name: "index_meetings_on_instructor_id"
     t.index ["section_id"], name: "index_meetings_on_section_id"
   end
 
   create_table "recommendations", force: :cascade do |t|
     t.bigint "recommender_id", null: false
-    t.bigint "recommended_id", null: false
+    t.integer "recommended_id"
     t.bigint "course_id", null: false
     t.text "message", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.string "first_name"
+    t.string "middle_name"
+    t.string "last_name"
+    t.string "legal_last_name"
+    t.string "name_suffix"
+    t.string "email"
+    t.string "section_number"
+    t.string "username"
     t.index ["course_id"], name: "index_recommendations_on_course_id"
     t.index ["recommended_id"], name: "index_recommendations_on_recommended_id"
     t.index ["recommender_id"], name: "index_recommendations_on_recommender_id"
   end
 
   create_table "sections", force: :cascade do |t|
+    t.string "section_number"
     t.bigint "course_id", null: false
-    t.string "class_number", null: false
-    t.string "section_number", null: false
-    t.string "component", null: false
-    t.string "instruction_mode"
-    t.date "start_date"
-    t.date "end_date"
-    t.string "enrollment_status"
-    t.string "status"
-    t.string "type"
-    t.string "associated_class"
-    t.boolean "auto_enroll_waitlist"
-    t.string "auto_enroll_section1"
-    t.string "auto_enroll_section2"
-    t.boolean "consent"
-    t.integer "waitlist_capacity"
-    t.integer "minimum_enrollment"
-    t.integer "enrollment_total"
-    t.integer "waitlist_total"
-    t.string "location"
-    t.string "primary_instructor_section"
-    t.string "combined_section"
-    t.string "holiday_schedule"
-    t.string "session_code"
-    t.string "session_description"
+    t.integer "instructor_id"
     t.string "term"
     t.string "campus"
-    t.jsonb "meeting_attributes_json"
-    t.time "start_time"
-    t.time "end_time"
-    t.string "days"
     t.string "schedule"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "instructor_id"
+    t.string "class_number"
+    t.string "component"
+    t.time "start_time"
+    t.time "end_time"
+    t.string "days"
+    t.string "instruction_mode"
+    t.string "enrollment_status"
+    t.string "status"
+    t.string "section_type"
+    t.string "associated_class"
+    t.boolean "auto_enroll_waitlist"
+    t.integer "waitlist_capacity"
+    t.integer "enrollment_total"
+    t.string "primary_instructor_section"
+    t.string "session_code"
+    t.string "session_description"
+    t.jsonb "section_attributes"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "auto_enroll_section1"
+    t.string "auto_enroll_section2"
+    t.integer "waitlist_total"
     t.string "section"
     t.integer "course_offering_number"
     t.string "academic_group"
@@ -201,9 +194,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
     t.string "catalog_number"
     t.string "career"
     t.text "description"
+    t.boolean "consent"
+    t.integer "minimum_enrollment"
     t.string "academic_org"
+    t.string "location"
     t.string "equivalent_course_id"
     t.date "cancel_date"
+    t.string "combined_section"
+    t.string "holiday_schedule"
     t.string "sec_campus"
     t.string "sec_academic_group"
     t.string "sec_catalog_number"
@@ -212,7 +210,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
     t.string "name"
     t.text "section_attributes_json"
     t.integer "max_graders"
-    t.index ["class_number"], name: "index_sections_on_class_number", unique: true
     t.index ["course_id"], name: "index_sections_on_course_id"
   end
 
@@ -240,11 +237,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_183234) do
   end
 
   add_foreign_key "approvals", "users"
+  add_foreign_key "availabilities", "users"
+  add_foreign_key "enrollments", "sections"
   add_foreign_key "grader_applications", "courses"
   add_foreign_key "grader_applications", "sections"
   add_foreign_key "grader_applications", "users"
-  add_foreign_key "meetings", "courses"
   add_foreign_key "meetings", "sections"
+  add_foreign_key "meetings", "users", column: "instructor_id"
   add_foreign_key "recommendations", "courses"
   add_foreign_key "recommendations", "users", column: "recommended_id"
   add_foreign_key "recommendations", "users", column: "recommender_id"
