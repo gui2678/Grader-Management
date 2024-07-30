@@ -1,4 +1,3 @@
-<% content_for :title, 'User Management' %>
 <div class="admin-content">
   <h1>User Management</h1>
   <div class="table-responsive">
@@ -22,10 +21,18 @@
             <td><%= user.role %></td>
             <td class="text-center" id="approved-<%= user.id %>"><%= user.approved? ? 'Yes' : 'No' %></td>
             <td class="d-flex justify-content-center align-items-center">
-              <%= form_with(url: approve_requests_path, method: :get, local: true) do |form| %>
-                <%= form.hidden_field :user_id, value: user.id %>
-                <%= form.check_box :approved, checked: user.approved? %>
-                <%= form.submit 'Save', class: 'btn btn-primary btn-sm' %>
+              <% if user.approved? %>
+                <%= form_with(url: approve_requests_path, method: :get, local: true) do |form| %>
+                  <%= form.hidden_field :user_id, value: user.id %>
+                  <%= form.hidden_field :approved, value: '0' %>
+                  <%= form.submit 'Unapprove', class: 'btn btn-danger btn-sm' %>
+                <% end %>
+              <% else %>
+                <%= form_with(url: approve_requests_path, method: :get, local: true) do |form| %>
+                  <%= form.hidden_field :user_id, value: user.id %>
+                  <%= form.hidden_field :approved, value: '1' %>
+                  <%= form.submit 'Approve', class: 'btn btn-success btn-sm' %>
+                <% end %>
               <% end %>
             </td>
           </tr>

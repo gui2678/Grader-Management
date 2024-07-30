@@ -102,6 +102,10 @@ class CoursesController < ApplicationController
     campus = params[:campus]
   
     if term.present? && campus.present?
+
+      GraderApplication.delete_all
+      Recommendation.delete_all
+
       Meeting.delete_all
       Section.delete_all
       Course.delete_all
