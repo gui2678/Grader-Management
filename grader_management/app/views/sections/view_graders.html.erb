@@ -1,20 +1,24 @@
-<h1>Graders for Section <%= @section.section_number %></h1>
+<h1 class="header">Graders for Section <%= @section.section_number %></h1>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Display Name</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @graders.each do |grader| %>
+<div class="table-container">
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= grader.display_name %></td>
-        <td><%= grader.email %></td>
+        <th>Display Name</th>
+        <th>Email</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @graders.each do |grader| %>
+        <tr>
+          <td><%= grader.display_name %></td>
+          <td><%= grader.email %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<%= link_to 'Back', course_path(@section.course), class: 'btn btn-secondary' %>
+<div class="actions">
+  <%= link_to 'Back', course_path(@section.course), class: 'btn btn-secondary' %>
+</div>

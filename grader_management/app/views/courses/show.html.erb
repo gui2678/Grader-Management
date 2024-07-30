@@ -5,7 +5,9 @@
       <p class="lead"><%= @course.course_description %></p>
       <p class="mb-4">Credits: <%= @course.credits %></p>
       <%= link_to 'Back', courses_path(search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-secondary' %>
-      <%= link_to 'Edit', edit_course_path(@course, search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-primary' %>
+      <% if current_user.admin? %>
+        <%= link_to 'Edit', edit_course_path(@course, search: params[:search], sort_by: params[:sort_by]), class: 'btn btn-primary' %>
+      <% end %>
     </div>
   </div>
 
@@ -20,7 +22,9 @@
                 <h5 class="card-title mb-0">Section <%= section.section_number %></h5>
                 <div>
                   <%= link_to 'View Graders', view_graders_course_section_path(@course, section), class: 'btn btn-light' %>
-                  <%= link_to 'Edit Section', edit_course_section_path(@course, section), class: 'btn btn-light' %>
+                  <% if current_user.admin? %>
+                    <%= link_to 'Edit Section', edit_course_section_path(@course, section), class: 'btn btn-light' %>
+                  <% end %>
                   <span class="badge badge-light"><%= section.grader_applications.where(approved: true).count %> / <%= section.max_graders || 2 %></span>
                 </div>
               </div>
