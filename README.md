@@ -1,5 +1,5 @@
 
-# 2024-su-Team-2-Lab-2
+# Grader Management
 
 ## Project Overview
 
@@ -20,8 +20,7 @@ To set up the project locally, follow these steps:
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/cse-3901-sharkey/2024-su-Team-2-Lab-3.git
-    cd 2024-su-Team-2-Lab-3
+    git clonehttps://github.com/gui2678/Grader-Management.git
     cd grader_management
     ```
 
