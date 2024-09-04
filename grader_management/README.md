@@ -1,6 +1,3 @@
-
-# 2024-su-Team-2-Lab-2
-
 ## Project Overview
 
 This project is a web application developed using Ruby on Rails for viewing and managing OSU CSE courses. It allows administrators to manage courses, sections, and users, providing functionalities like adding, editing, and deleting records.
@@ -20,8 +17,7 @@ To set up the project locally, follow these steps:
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/cse-3901-sharkey/2024-su-Team-2-Lab-3.git
-    cd 2024-su-Team-2-Lab-3
+    git clone https://github.com/gui2678/Grader-Management.git
     cd grader_management
     ```
 
@@ -315,10 +311,3 @@ To run the test suite, execute:
 ```sh
 rails test
 ```
-
-## Contributing
-- Guilherme Oliveira
-- Camron Vonner
-- Nasser
-- Elbek
-- Jarret
